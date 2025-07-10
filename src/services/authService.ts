@@ -1,8 +1,8 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { config } from "../config/env";
-import prisma from "../config/database";
-import { User, CreateUserRequest, LoginRequest, AuthResponse } from "../types";
+import { config } from "@/config/env";
+import prisma from "@/config/database";
+import { User, CreateUserRequest, LoginRequest, AuthResponse } from "@/types";
 
 export class AuthService {
   static async register(userData: CreateUserRequest): Promise<AuthResponse> {

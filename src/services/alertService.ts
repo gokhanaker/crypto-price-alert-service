@@ -1,13 +1,13 @@
-import prisma from "../config/database";
+import prisma from "@/config/database";
 import {
   Alert,
   CreateAlertRequest,
   UpdateAlertRequest,
   AlertWithDetails,
-} from "../types";
-import { CryptocurrencyService } from "./cryptocurrencyService";
-import { EventService, AlertTriggeredEvent } from "./eventService";
-import { logger } from "./loggerService";
+} from "@/types";
+import { CryptocurrencyService } from "@/services/cryptocurrencyService";
+import { EventService, AlertTriggeredEvent } from "@/services/eventService";
+import { logger } from "@/services/loggerService";
 
 export class AlertService {
   static async createAlert(

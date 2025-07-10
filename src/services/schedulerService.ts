@@ -1,7 +1,7 @@
 import cron from "node-cron";
-import { PriceUpdateService } from "./priceUpdateService";
-import { config } from "../config/env";
-import { logger } from "./loggerService";
+import { PriceUpdateService } from "@/services/priceUpdateService";
+import { config } from "@/config/env";
+import { logger } from "@/services/loggerService";
 
 export class SchedulerService {
   private static isRunning = false;

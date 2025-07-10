@@ -1,8 +1,8 @@
 import axios from "axios";
-import { config } from "../config/env";
-import prisma from "../config/database";
-import { AlertService } from "./alertService";
-import { logger } from "./loggerService";
+import { config } from "@/config/env";
+import prisma from "@/config/database";
+import { AlertService } from "@/services/alertService";
+import { logger } from "@/services/loggerService";
 
 export class PriceUpdateService {
   static async updateAllPrices(): Promise<void> {

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { AlertService } from "../services/alertService";
+import { AlertService } from "@/services/alertService";
 
 export class AlertController {
   static async createAlert(req: Request, res: Response) {

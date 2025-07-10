@@ -1,8 +1,8 @@
 import axios from "axios";
-import { config } from "../config/env";
-import prisma from "../config/database";
-import { Cryptocurrency, CoinGeckoPrice, CoinGeckoCoin } from "../types";
-import { logger } from "./loggerService";
+import { config } from "@/config/env";
+import prisma from "@/config/database";
+import { Cryptocurrency, CoinGeckoPrice, CoinGeckoCoin } from "@/types";
+import { logger } from "@/services/loggerService";
 
 export class CryptocurrencyService {
   static async fetchPrices(coinIds: string[]): Promise<CoinGeckoPrice> {

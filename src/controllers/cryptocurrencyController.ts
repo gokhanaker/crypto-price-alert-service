@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { CryptocurrencyService } from "../services/cryptocurrencyService";
-import { logger } from "../services/loggerService";
+import { CryptocurrencyService } from "@/services/cryptocurrencyService";
+import { logger } from "@/services/loggerService";
 
 export class CryptocurrencyController {
   static async getAllCryptocurrencies(req: Request, res: Response) {

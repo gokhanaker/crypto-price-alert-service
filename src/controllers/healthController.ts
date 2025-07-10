@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { config } from "../config/env";
-import prisma from "../config/database";
-import { SchedulerService } from "../services/schedulerService";
-import { PriceUpdateService } from "../services/priceUpdateService";
-import { logger } from "../services/loggerService";
+import { config } from "@/config/env";
+import prisma from "@/config/database";
+import { SchedulerService } from "@/services/schedulerService";
+import { PriceUpdateService } from "@/services/priceUpdateService";
+import { logger } from "@/services/loggerService";
 
 export class HealthController {
   // Get health status of the app

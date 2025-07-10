@@ -1,5 +1,5 @@
 import { EventEmitter } from "events";
-import { logger } from "./loggerService";
+import { logger } from "@/services/loggerService";
 
 export interface AlertTriggeredEvent {
   alertId: string;

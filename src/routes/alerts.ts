@@ -1,11 +1,11 @@
 import { Router } from "express";
-import { AlertController } from "../controllers/alertController";
+import { AlertController } from "@/controllers/alertController";
 import {
   validateRequest,
   createAlertSchema,
   updateAlertSchema,
-} from "../middleware/validation";
-import { authenticateToken } from "../middleware/auth";
+} from "@/middleware/validation";
+import { authenticateToken } from "@/middleware/auth";
 
 const router = Router();
 
