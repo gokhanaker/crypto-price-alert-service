@@ -6,7 +6,18 @@
     "outDir": "./dist",
     "strict": true,
     "esModuleInterop": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": ["*"],
+      "@/config/*": ["config/*"],
+      "@/controllers/*": ["controllers/*"],
+      "@/middleware/*": ["middleware/*"],
+      "@/routes/*": ["routes/*"],
+      "@/services/*": ["services/*"],
+      "@/types/*": ["types/*"],
+      "@/utils/*": ["utils/*"]
+    }
   },
   "include": ["src"],
   "exclude": ["node_modules"]
