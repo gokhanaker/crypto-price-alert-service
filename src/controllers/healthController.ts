@@ -13,15 +13,6 @@ export class HealthController {
       // Test database connection
       await prisma.$queryRaw`SELECT 1`;
 
-      // Get system info
-      const systemInfo = {
-        uptime: process.uptime(),
-        memory: process.memoryUsage(),
-        nodeVersion: process.version,
-        platform: process.platform,
-        arch: process.arch,
-      };
-
       const schedulerStatus = SchedulerService.getSchedulerStatus();
 
       const healthStatus = {
@@ -29,13 +20,11 @@ export class HealthController {
         timestamp: new Date().toISOString(),
         environment: config.nodeEnv,
         database: "connected",
-        system: systemInfo,
         scheduler: schedulerStatus,
       };
 
       logger.debug("✅ Health check passed", {
         environment: config.nodeEnv,
-        uptime: systemInfo.uptime,
         schedulerActive: schedulerStatus.isRunning,
       });
 
