@@ -1,0 +1,153 @@
+{
+  "info": {
+    "name": "Crypto Price Alert Service",
+    "_postman_id": "crypto-price-alert-service-collection",
+    "description": "Postman collection for Crypto Price Alert Service with event-driven alert system",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\"\n}"
+            },
+            "url": { "raw": "http://localhost:6000/api/auth/register", "protocol": "http", "host": ["localhost"], "port": "6000", "path": ["api", "auth", "register"] }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": { "raw": "http://localhost:6000/api/auth/login", "protocol": "http", "host": ["localhost"], "port": "6000", "path": ["api", "auth", "login"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Cryptocurrencies (Auth Required)",
+      "item": [
+        {
+          "name": "Get All Cryptocurrencies",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{jwtToken}}" }],
+            "url": { "raw": "http://localhost:6000/api/cryptocurrencies", "protocol": "http", "host": ["localhost"], "port": "6000", "path": ["api", "cryptocurrencies"] }
+          }
+        },
+        {
+          "name": "Get Cryptocurrency by ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{jwtToken}}" }],
+            "url": { "raw": "http://localhost:6000/api/cryptocurrencies/{{cryptoId}}", "protocol": "http", "host": ["localhost"], "port": "6000", "path": ["api", "cryptocurrencies", "{{cryptoId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Alerts (Auth Required)",
+      "item": [
+        {
+          "name": "Create Alert",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{jwtToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cryptocurrencyId\": \"{{cryptoId}}\",\n  \"alertType\": \"ABOVE\",\n  \"targetPrice\": 50000\n}"
+            },
+            "url": { "raw": "http://localhost:6000/api/alerts", "protocol": "http", "host": ["localhost"], "port": "6000", "path": ["api", "alerts"] }
+          }
+        },
+        {
+          "name": "Get User Alerts",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{jwtToken}}" }],
+            "url": { "raw": "http://localhost:6000/api/alerts", "protocol": "http", "host": ["localhost"], "port": "6000", "path": ["api", "alerts"] }
+          }
+        },
+        {
+          "name": "Get Alert by ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{jwtToken}}" }],
+            "url": { "raw": "http://localhost:6000/api/alerts/{{alertId}}", "protocol": "http", "host": ["localhost"], "port": "6000", "path": ["api", "alerts", "{{alertId}}"] }
+          }
+        },
+        {
+          "name": "Update Alert",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{jwtToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"targetPrice\": 55000,\n  \"isActive\": true\n}"
+            },
+            "url": { "raw": "http://localhost:6000/api/alerts/{{alertId}}", "protocol": "http", "host": ["localhost"], "port": "6000", "path": ["api", "alerts", "{{alertId}}"] }
+          }
+        },
+        {
+          "name": "Delete Alert",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{jwtToken}}" }],
+            "url": { "raw": "http://localhost:6000/api/alerts/{{alertId}}", "protocol": "http", "host": ["localhost"], "port": "6000", "path": ["api", "alerts", "{{alertId}}"] }
+          }
+        },
+        {
+          "name": "Get Triggered Alerts",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{jwtToken}}" }],
+            "url": { "raw": "http://localhost:6000/api/alerts/triggered", "protocol": "http", "host": ["localhost"], "port": "6000", "path": ["api", "alerts", "triggered"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Health Monitoring (Auth Required)",
+      "item": [
+        {
+          "name": "Get Health Status",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{jwtToken}}" }],
+            "url": { "raw": "http://localhost:6000/api/health", "protocol": "http", "host": ["localhost"], "port": "6000", "path": ["api", "health"] }
+          }
+        },
+        {
+          "name": "Get Scheduler Health",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{jwtToken}}" }],
+            "url": { "raw": "http://localhost:6000/api/health/scheduler", "protocol": "http", "host": ["localhost"], "port": "6000", "path": ["api", "health", "scheduler"] }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    { "key": "jwtToken", "value": "" },
+    { "key": "cryptoId", "value": "" },
+    { "key": "alertId", "value": "" }
+  ]
+} 
