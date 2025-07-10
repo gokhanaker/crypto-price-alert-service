@@ -4,11 +4,11 @@ A Node.js-based cryptocurrency price alert service that enables users to set ale
 
 ## 🚀 Features
 
-- **User Authentication**: JWT-based authentication with secure password hashing
+- **User Registration & Authentication**: JWT-based authentication, Registering user with secure password hashing
 - **Cryptocurrency Management**: Real-time price data from CoinGecko API
 - **Enhanced Price Alerts**: Set alerts for when prices go above or below target values
 - **Event-Driven Notifications**: Event-based architecture for alert notifications
-- **Automatic Price Updates**: Cron job scheduler updates prices every 2 minutes
+- **Automatic Price Updates**: Cron job scheduler updates prices every minute
 - **Rate Limiting**: Protection against API abuse
 - **Enhanced Security**: Helmet security headers and CORS configuration
 - **Health Monitoring**: Detailed health check endpoint with system metrics
@@ -18,13 +18,12 @@ A Node.js-based cryptocurrency price alert service that enables users to set ale
 - **Runtime**: Node.js with TypeScript
 - **Framework**: Express.js
 - **Database**: PostgreSQL with Prisma ORM
-- **Authentication**: JWT (JSON Web Tokens)
+- **Authentication**: JWT
 - **Validation**: Joi
 - **External API**: CoinGecko for cryptocurrency data
-- **Testing**: Jest + Supertest
+- **Testing**: Jest
 - **Logging**: Winston with file and console transports
-- **Security**: Helmet, CORS, Rate Limiting
-- **Performance**: Compression middleware
+- **Security**: Helmet, Rate Limiting
 
 ## 🏗️ Implementation Decisions
 
@@ -35,7 +34,6 @@ A Node.js-based cryptocurrency price alert service that enables users to set ale
 - CoinGecko provides reliable, free cryptocurrency price data
 - Supports 10,000+ cryptocurrencies with comprehensive market data
 - No API key required for basic usage (rate-limited)
-- Real-time price updates with high accuracy
 
 ### Scheduler Implementation
 
@@ -74,7 +72,7 @@ Alert Triggered → Event Bus → Notification Service → Email/Push/SMS Servic
 ### 1. Clone and Setup
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/gokhanaker/crypto-price-alert-service
 cd crypto-price-alert-service
 npm install
 cp env.example .env
