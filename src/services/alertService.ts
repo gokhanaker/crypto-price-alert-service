@@ -1,37 +1,27 @@
-import prisma from "@/config/database";
-import {
-  Alert,
-  CreateAlertRequest,
-  UpdateAlertRequest,
-  AlertWithDetails,
-} from "@/types";
-import { CryptocurrencyService } from "@/services/cryptocurrencyService";
-import { EventService, AlertTriggeredEvent } from "@/services/eventService";
-import { logger } from "@/services/loggerService";
+import prisma from '@/config/database';
+import { Alert, CreateAlertRequest, UpdateAlertRequest, AlertWithDetails } from '@/types';
+import { CryptocurrencyService } from '@/services/cryptocurrencyService';
+import { EventService, AlertTriggeredEvent } from '@/services/eventService';
+import { logger } from '@/services/loggerService';
 
 export class AlertService {
-  static async createAlert(
-    userId: string,
-    alertData: CreateAlertRequest
-  ): Promise<Alert> {
+  static async createAlert(userId: string, alertData: CreateAlertRequest): Promise<Alert> {
     const { cryptocurrencyId, alertType, targetPrice } = alertData;
 
-    logger.info("🔔 Creating new alert", {
+    logger.info('🔔 Creating new alert', {
       userId,
       cryptocurrencyId,
       alertType,
       targetPrice,
     });
 
-    const cryptocurrency = await CryptocurrencyService.getCryptocurrencyById(
-      cryptocurrencyId
-    );
+    const cryptocurrency = await CryptocurrencyService.getCryptocurrencyById(cryptocurrencyId);
     if (!cryptocurrency) {
-      logger.error("❌ Cryptocurrency not found for alert creation", {
+      logger.error('❌ Cryptocurrency not found for alert creation', {
         userId,
         cryptocurrencyId,
       });
-      throw new Error("Cryptocurrency not found");
+      throw new Error('Cryptocurrency not found');
     }
 
     const alert = await prisma.alert.create({
@@ -43,7 +33,7 @@ export class AlertService {
       },
     });
 
-    logger.info("✅ Alert created successfully", {
+    logger.info('✅ Alert created successfully', {
       alertId: alert.id,
       userId,
       cryptocurrencyId,
@@ -55,7 +45,7 @@ export class AlertService {
   }
 
   static async getUserAlerts(userId: string): Promise<AlertWithDetails[]> {
-    logger.debug("📋 Getting user alerts", { userId });
+    logger.debug('📋 Getting user alerts', { userId });
 
     const alerts = (await prisma.alert.findMany({
       where: { userId },
@@ -72,10 +62,10 @@ export class AlertService {
           },
         },
       },
-      orderBy: { createdAt: "desc" },
+      orderBy: { createdAt: 'desc' },
     })) as AlertWithDetails[];
 
-    logger.debug("✅ User alerts retrieved", {
+    logger.debug('✅ User alerts retrieved', {
       userId,
       alertCount: alerts.length,
     });
@@ -83,11 +73,8 @@ export class AlertService {
     return alerts;
   }
 
-  static async getAlertById(
-    alertId: string,
-    userId: string
-  ): Promise<AlertWithDetails | null> {
-    logger.debug("🔍 Getting alert by ID", { alertId, userId });
+  static async getAlertById(alertId: string, userId: string): Promise<AlertWithDetails | null> {
+    logger.debug('🔍 Getting alert by ID', { alertId, userId });
 
     const alert = await prisma.alert.findFirst({
       where: {
@@ -110,9 +97,9 @@ export class AlertService {
     });
 
     if (alert) {
-      logger.debug("✅ Alert found by ID", { alertId, userId });
+      logger.debug('✅ Alert found by ID', { alertId, userId });
     } else {
-      logger.debug("❌ Alert not found by ID", { alertId, userId });
+      logger.debug('❌ Alert not found by ID', { alertId, userId });
     }
 
     return alert;
@@ -123,7 +110,7 @@ export class AlertService {
     userId: string,
     updateData: UpdateAlertRequest
   ): Promise<Alert> {
-    logger.info("✏️ Updating alert", { alertId, userId, updateData });
+    logger.info('✏️ Updating alert', { alertId, userId, updateData });
 
     const existingAlert = await prisma.alert.findFirst({
       where: {
@@ -133,8 +120,8 @@ export class AlertService {
     });
 
     if (!existingAlert) {
-      logger.error("❌ Alert not found for update", { alertId, userId });
-      throw new Error("Alert not found");
+      logger.error('❌ Alert not found for update', { alertId, userId });
+      throw new Error('Alert not found');
     }
 
     const alert = await prisma.alert.update({
@@ -142,13 +129,13 @@ export class AlertService {
       data: updateData,
     });
 
-    logger.info("✅ Alert updated successfully", { alertId, userId });
+    logger.info('✅ Alert updated successfully', { alertId, userId });
 
     return alert;
   }
 
   static async deleteAlert(alertId: string, userId: string): Promise<void> {
-    logger.info("🗑️ Deleting alert", { alertId, userId });
+    logger.info('🗑️ Deleting alert', { alertId, userId });
 
     const alert = await prisma.alert.findFirst({
       where: {
@@ -158,15 +145,15 @@ export class AlertService {
     });
 
     if (!alert) {
-      logger.error("❌ Alert not found for deletion", { alertId, userId });
-      throw new Error("Alert not found");
+      logger.error('❌ Alert not found for deletion', { alertId, userId });
+      throw new Error('Alert not found');
     }
 
     await prisma.alert.delete({
       where: { id: alertId },
     });
 
-    logger.info("✅ Alert deleted successfully", { alertId, userId });
+    logger.info('✅ Alert deleted successfully', { alertId, userId });
   }
 
   static async checkAndTriggerAlerts(
@@ -174,7 +161,7 @@ export class AlertService {
     currentPrice: number
   ): Promise<void> {
     try {
-      logger.debug("🔍 Checking alerts for cryptocurrency", {
+      logger.debug('🔍 Checking alerts for cryptocurrency', {
         cryptocurrencyId,
         currentPrice,
       });
@@ -190,7 +177,7 @@ export class AlertService {
         },
       });
 
-      logger.debug("📋 Found alerts to check", {
+      logger.debug('📋 Found alerts to check', {
         cryptocurrencyId,
         alertCount: alerts.length,
       });
@@ -202,7 +189,7 @@ export class AlertService {
 
         if (shouldTrigger) {
           triggeredAlerts.push(alert);
-          logger.info("🚨 Alert should be triggered", {
+          logger.info('🚨 Alert should be triggered', {
             alertId: alert.id,
             userId: alert.userId,
             alertType: alert.alertType,
@@ -213,22 +200,22 @@ export class AlertService {
       }
 
       if (triggeredAlerts.length > 0) {
-        logger.info("🎯 Processing triggered alerts", {
+        logger.info('🎯 Processing triggered alerts', {
           cryptocurrencyId,
           triggeredCount: triggeredAlerts.length,
         });
         await this.processTriggeredAlerts(triggeredAlerts, currentPrice);
       } else {
-        logger.debug("✅ No alerts triggered", {
+        logger.debug('✅ No alerts triggered', {
           cryptocurrencyId,
           currentPrice,
         });
       }
     } catch (error) {
-      logger.error("❌ Error checking alerts", {
+      logger.error('❌ Error checking alerts', {
         cryptocurrencyId,
         currentPrice,
-        error: error instanceof Error ? error.message : "Unknown error",
+        error: error instanceof Error ? error.message : 'Unknown error',
         stack: error instanceof Error ? error.stack : undefined,
       });
     }
@@ -238,25 +225,22 @@ export class AlertService {
     const targetPrice = parseFloat(alert.targetPrice.toString());
 
     switch (alert.alertType) {
-      case "ABOVE":
+      case 'ABOVE':
         return currentPrice >= targetPrice;
-      case "BELOW":
+      case 'BELOW':
         return currentPrice <= targetPrice;
       default:
         return false;
     }
   }
 
-  private static async processTriggeredAlerts(
-    alerts: any[],
-    currentPrice: number
-  ): Promise<void> {
-    logger.info("🎯 Processing triggered alerts", {
+  private static async processTriggeredAlerts(alerts: any[], currentPrice: number): Promise<void> {
+    logger.info('🎯 Processing triggered alerts', {
       alertCount: alerts.length,
       currentPrice,
     });
 
-    const triggerPromises = alerts.map(async (alert) => {
+    const triggerPromises = alerts.map(async alert => {
       try {
         await prisma.alert.update({
           where: { id: alert.id },
@@ -267,7 +251,7 @@ export class AlertService {
           },
         });
 
-        logger.info("✅ Alert updated with trigger information", {
+        logger.info('✅ Alert updated with trigger information', {
           alertId: alert.id,
           userId: alert.userId,
           triggeredPrice: currentPrice,
@@ -289,15 +273,15 @@ export class AlertService {
 
         EventService.emitAlertTriggered(eventData);
 
-        logger.info("📡 Event emitted for alert", {
+        logger.info('📡 Event emitted for alert', {
           alertId: alert.id,
           userId: alert.userId,
         });
       } catch (error) {
-        logger.error("❌ Failed to process triggered alert", {
+        logger.error('❌ Failed to process triggered alert', {
           alertId: alert.id,
           userId: alert.userId,
-          error: error instanceof Error ? error.message : "Unknown error",
+          error: error instanceof Error ? error.message : 'Unknown error',
           stack: error instanceof Error ? error.stack : undefined,
         });
       }
@@ -305,15 +289,13 @@ export class AlertService {
 
     await Promise.all(triggerPromises);
 
-    logger.info("✅ All triggered alerts processed", {
+    logger.info('✅ All triggered alerts processed', {
       alertCount: alerts.length,
     });
   }
 
-  static async getUserTriggeredAlerts(
-    userId: string
-  ): Promise<AlertWithDetails[]> {
-    logger.debug("📋 Getting user triggered alerts", { userId });
+  static async getUserTriggeredAlerts(userId: string): Promise<AlertWithDetails[]> {
+    logger.debug('📋 Getting user triggered alerts', { userId });
 
     const alerts = (await prisma.alert.findMany({
       where: {
@@ -333,10 +315,10 @@ export class AlertService {
           },
         },
       },
-      orderBy: { triggeredAt: "desc" },
+      orderBy: { triggeredAt: 'desc' },
     })) as AlertWithDetails[];
 
-    logger.debug("✅ User triggered alerts retrieved", {
+    logger.debug('✅ User triggered alerts retrieved', {
       userId,
       triggeredCount: alerts.length,
     });

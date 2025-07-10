@@ -1,5 +1,5 @@
-import { EventEmitter } from "events";
-import { logger } from "@/services/loggerService";
+import { EventEmitter } from 'events';
+import { logger } from '@/services/loggerService';
 
 export interface AlertTriggeredEvent {
   alertId: string;
@@ -7,7 +7,7 @@ export interface AlertTriggeredEvent {
   cryptocurrencyId: string;
   cryptocurrencySymbol: string;
   cryptocurrencyName: string;
-  alertType: "ABOVE" | "BELOW";
+  alertType: 'ABOVE' | 'BELOW';
   targetPrice: number;
   triggeredPrice: number;
   triggeredAt: Date;
@@ -25,7 +25,7 @@ export class EventService extends EventEmitter {
   private constructor() {
     super();
     this.setMaxListeners(20); // Allow multiple listeners
-    logger.info("📡 EventService initialized");
+    logger.info('📡 EventService initialized');
   }
 
   static getInstance(): EventService {
@@ -38,7 +38,7 @@ export class EventService extends EventEmitter {
   static emitAlertTriggered(event: AlertTriggeredEvent): void {
     const eventService = EventService.getInstance();
 
-    logger.info("📡 Emitting alert triggered event", {
+    logger.info('📡 Emitting alert triggered event', {
       alertId: event.alertId,
       userId: event.userId,
       cryptocurrency: event.cryptocurrencySymbol,
@@ -47,74 +47,74 @@ export class EventService extends EventEmitter {
       triggeredPrice: event.triggeredPrice,
     });
 
-    eventService.emit("alertTriggered", event);
+    eventService.emit('alertTriggered', event);
 
-    logger.info("📡 Event emitted successfully", {
+    logger.info('📡 Event emitted successfully', {
       alertId: event.alertId,
-      listenerCount: eventService.listenerCount("alertTriggered"),
+      listenerCount: eventService.listenerCount('alertTriggered'),
     });
   }
 
   static onAlertTriggered(listener: EventListener): void {
     const eventService = EventService.getInstance();
 
-    logger.info("🎧 Registering event listener", {
+    logger.info('🎧 Registering event listener', {
       listenerName: listener.constructor.name,
-      currentListeners: eventService.listenerCount("alertTriggered"),
+      currentListeners: eventService.listenerCount('alertTriggered'),
     });
 
-    eventService.on("alertTriggered", async (event: AlertTriggeredEvent) => {
+    eventService.on('alertTriggered', async (event: AlertTriggeredEvent) => {
       try {
-        logger.debug("🎧 Event listener processing event", {
+        logger.debug('🎧 Event listener processing event', {
           alertId: event.alertId,
           listenerName: listener.constructor.name,
         });
 
         await listener.onAlertTriggered(event);
 
-        logger.debug("✅ Event listener processed successfully", {
+        logger.debug('✅ Event listener processed successfully', {
           alertId: event.alertId,
           listenerName: listener.constructor.name,
         });
       } catch (error) {
-        logger.error("❌ Error in event listener", {
+        logger.error('❌ Error in event listener', {
           alertId: event.alertId,
           listenerName: listener.constructor.name,
-          error: error instanceof Error ? error.message : "Unknown error",
+          error: error instanceof Error ? error.message : 'Unknown error',
           stack: error instanceof Error ? error.stack : undefined,
         });
       }
     });
 
-    logger.info("✅ Event listener registered successfully", {
+    logger.info('✅ Event listener registered successfully', {
       listenerName: listener.constructor.name,
-      totalListeners: eventService.listenerCount("alertTriggered"),
+      totalListeners: eventService.listenerCount('alertTriggered'),
     });
   }
 
   static removeAlertTriggeredListener(listener: EventListener): void {
     const eventService = EventService.getInstance();
 
-    logger.info("🗑️ Removing event listener", {
+    logger.info('🗑️ Removing event listener', {
       listenerName: listener.constructor.name,
-      currentListeners: eventService.listenerCount("alertTriggered"),
+      currentListeners: eventService.listenerCount('alertTriggered'),
     });
 
-    eventService.removeListener("alertTriggered", listener.onAlertTriggered);
+    eventService.removeListener('alertTriggered', listener.onAlertTriggered);
 
-    logger.info("✅ Event listener removed successfully", {
+    logger.info('✅ Event listener removed successfully', {
       listenerName: listener.constructor.name,
-      remainingListeners: eventService.listenerCount("alertTriggered"),
+      remainingListeners: eventService.listenerCount('alertTriggered'),
     });
   }
 
   static getListenerCount(): number {
     const eventService = EventService.getInstance();
-    const count = eventService.listenerCount("alertTriggered");
+    const count = eventService.listenerCount('alertTriggered');
 
-    logger.debug("📊 Getting listener count", {
+    logger.debug('📊 Getting listener count', {
       count,
-      eventType: "alertTriggered",
+      eventType: 'alertTriggered',
     });
 
     return count;

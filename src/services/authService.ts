@@ -1,8 +1,8 @@
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import { config } from "@/config/env";
-import prisma from "@/config/database";
-import { User, CreateUserRequest, LoginRequest, AuthResponse } from "@/types";
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import { config } from '@/config/env';
+import prisma from '@/config/database';
+import { User, CreateUserRequest, LoginRequest, AuthResponse } from '@/types';
 
 export class AuthService {
   static async register(userData: CreateUserRequest): Promise<AuthResponse> {
@@ -13,7 +13,7 @@ export class AuthService {
     });
 
     if (existingUser) {
-      throw new Error("User with this email already exists");
+      throw new Error('User with this email already exists');
     }
 
     // Hash password
@@ -29,11 +29,9 @@ export class AuthService {
       },
     });
 
-    const token = jwt.sign(
-      { userId: user.id, email: user.email },
-      config.jwtSecret,
-      { expiresIn: "24h" }
-    );
+    const token = jwt.sign({ userId: user.id, email: user.email }, config.jwtSecret, {
+      expiresIn: '24h',
+    });
 
     const { passwordHash: _, ...userWithoutPassword } = user;
     return {
@@ -50,20 +48,18 @@ export class AuthService {
     });
 
     if (!user) {
-      throw new Error("Invalid email or password");
+      throw new Error('Invalid email or password');
     }
 
     // Verify password
     const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
     if (!isPasswordValid) {
-      throw new Error("Invalid email or password");
+      throw new Error('Invalid email or password');
     }
 
-    const token = jwt.sign(
-      { userId: user.id, email: user.email },
-      config.jwtSecret,
-      { expiresIn: "24h" }
-    );
+    const token = jwt.sign({ userId: user.id, email: user.email }, config.jwtSecret, {
+      expiresIn: '24h',
+    });
 
     const { passwordHash: _, ...userWithoutPassword } = user;
     return {
@@ -72,7 +68,7 @@ export class AuthService {
     };
   }
 
-  static async verifyToken(token: string): Promise<Omit<User, "passwordHash">> {
+  static async verifyToken(token: string): Promise<Omit<User, 'passwordHash'>> {
     try {
       const decoded = jwt.verify(token, config.jwtSecret) as {
         userId: string;
@@ -84,13 +80,13 @@ export class AuthService {
       });
 
       if (!user) {
-        throw new Error("User not found");
+        throw new Error('User not found');
       }
 
       const { passwordHash: _, ...userWithoutPassword } = user;
       return userWithoutPassword;
     } catch (error) {
-      throw new Error("Invalid token");
+      throw new Error('Invalid token');
     }
   }
 }

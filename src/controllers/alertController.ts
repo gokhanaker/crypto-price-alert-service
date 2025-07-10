@@ -1,5 +1,5 @@
-import { Request, Response } from "express";
-import { AlertService } from "@/services/alertService";
+import { Request, Response } from 'express';
+import { AlertService } from '@/services/alertService';
 
 export class AlertController {
   static async createAlert(req: Request, res: Response) {
@@ -8,7 +8,7 @@ export class AlertController {
       const alert = await AlertService.createAlert(userId, req.body);
 
       res.status(201).json({
-        message: "Alert created successfully",
+        message: 'Alert created successfully',
         alert,
       });
     } catch (error: any) {
@@ -28,7 +28,7 @@ export class AlertController {
       });
     } catch (error: any) {
       res.status(500).json({
-        error: "Failed to fetch alerts",
+        error: 'Failed to fetch alerts',
       });
     }
   }
@@ -42,7 +42,7 @@ export class AlertController {
 
       if (!alert) {
         return res.status(404).json({
-          error: "Alert not found",
+          error: 'Alert not found',
         });
       }
 
@@ -51,7 +51,7 @@ export class AlertController {
       });
     } catch (error: any) {
       res.status(500).json({
-        error: "Failed to fetch alert",
+        error: 'Failed to fetch alert',
       });
     }
   }
@@ -64,7 +64,7 @@ export class AlertController {
       const alert = await AlertService.updateAlert(id, userId, req.body);
 
       res.json({
-        message: "Alert updated successfully",
+        message: 'Alert updated successfully',
         alert,
       });
     } catch (error: any) {
@@ -82,7 +82,7 @@ export class AlertController {
       await AlertService.deleteAlert(id, userId);
 
       res.json({
-        message: "Alert deleted successfully",
+        message: 'Alert deleted successfully',
       });
     } catch (error: any) {
       res.status(400).json({
@@ -101,7 +101,7 @@ export class AlertController {
       });
     } catch (error: any) {
       res.status(500).json({
-        error: "Failed to fetch triggered alerts",
+        error: 'Failed to fetch triggered alerts',
       });
     }
   }

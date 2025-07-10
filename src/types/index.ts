@@ -20,7 +20,7 @@ export interface Cryptocurrency {
   updatedAt: Date;
 }
 
-export type AlertType = "ABOVE" | "BELOW";
+export type AlertType = 'ABOVE' | 'BELOW';
 
 export interface Alert {
   id: string;
@@ -62,12 +62,12 @@ export interface UpdateAlertRequest {
 // API Response Types
 export interface AuthResponse {
   token: string;
-  user: Omit<User, "passwordHash">;
+  user: Omit<User, 'passwordHash'>;
 }
 
 export interface AlertWithDetails extends Alert {
   cryptocurrency: Cryptocurrency;
-  user: Omit<User, "passwordHash">;
+  user: Omit<User, 'passwordHash'>;
 }
 
 // External API Types (CoinGecko)

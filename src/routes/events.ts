@@ -10,4 +10,4 @@ router.use(authenticateToken);
 // Initialize event controller
 EventController.getInstance();
 
-export default router; 
+export default router;
