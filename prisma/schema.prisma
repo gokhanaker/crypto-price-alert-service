@@ -1,0 +1,67 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  firstName    String?
+  lastName     String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  alerts Alert[]
+
+  @@map("users")
+}
+
+model Cryptocurrency {
+  id            String   @id @default(uuid())
+  coinId        String   @unique // CoinGecko ID (e.g., 'bitcoin', 'ethereum')
+  symbol        String   // e.g., 'BTC', 'ETH'
+  name          String   // e.g., 'Bitcoin', 'Ethereum'
+  currentPrice  Decimal  @default(0)
+  lastUpdated   DateTime @default(now())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  alerts Alert[]
+
+  @@map("cryptocurrencies")
+}
+
+model Alert {
+  id              String     @id @default(uuid())
+  userId          String
+  cryptocurrencyId String
+  alertType       AlertType
+  targetPrice     Decimal
+  isActive        Boolean    @default(true)
+  isTriggered     Boolean    @default(false) // Track if alert has been triggered
+  triggeredPrice  Decimal?   // Price when alert was triggered
+  triggeredAt     DateTime?  // When the alert was triggered
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  // Relations
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  cryptocurrency Cryptocurrency @relation(fields: [cryptocurrencyId], references: [id], onDelete: Cascade)
+
+  @@map("alerts")
+}
+
+enum AlertType {
+  ABOVE
+  BELOW
+} 
