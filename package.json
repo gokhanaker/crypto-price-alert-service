@@ -11,6 +11,7 @@
     "test:watch": "NODE_ENV=test jest --watch",
     "test:coverage": "NODE_ENV=test jest --coverage",
     "test:unit": "NODE_ENV=test jest --testPathPattern=unit",
+    "test:integration": "NODE_ENV=test jest --testPathPattern=integration",
     "lint": "eslint src/**/*.ts",
     "db:migrate": "prisma migrate dev",
     "db:generate": "prisma generate",
@@ -18,9 +19,7 @@
     "db:reset": "npx prisma migrate reset",
     "clean": "rm -rf dist",
     "prebuild": "npm run clean",
-    "postbuild": "npm run db:generate",
-    "start:prod": "NODE_ENV=production node -r tsconfig-paths/register dist/server.js",
-    "health": "curl -f http://localhost:6000/api/health || exit 1"
+    "postbuild": "npm run db:generate"
   },
   "keywords": [
     "crypto",
