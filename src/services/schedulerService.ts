@@ -6,11 +6,22 @@ import { logger } from '@/services/loggerService';
 export class SchedulerService {
   private static isRunning = false;
 
-  /**
-   * Start the price update scheduler
-   * Updates cryptocurrency prices every 1 minutes by default
-   */
-  static startPriceUpdateScheduler(): void {
+  static getSchedulerStatus(): { isRunning: boolean; nextUpdate?: Date } {
+    const tasks = cron.getTasks();
+    const priceUpdateTask = tasks.get('price-update');
+
+    const status = {
+      isRunning: this.isRunning,
+      nextUpdate: priceUpdateTask ? new Date(Date.now() + 2 * 60 * 1000) : undefined,
+    };
+
+    logger.debug('📊 Scheduler status retrieved', status);
+    return status;
+  }
+
+  static initializeScheduler(): void {
+    logger.info('🚀 Initializing price update scheduler...');
+
     if (this.isRunning) {
       logger.warn('⚠️  Price update scheduler is already running');
       return;
@@ -48,23 +59,5 @@ export class SchedulerService {
       interval,
       nextUpdate: new Date(Date.now() + interval * 60 * 1000).toISOString(),
     });
-  }
-
-  static getSchedulerStatus(): { isRunning: boolean; nextUpdate?: Date } {
-    const tasks = cron.getTasks();
-    const priceUpdateTask = tasks.get('price-update');
-
-    const status = {
-      isRunning: this.isRunning,
-      nextUpdate: priceUpdateTask ? new Date(Date.now() + 2 * 60 * 1000) : undefined,
-    };
-
-    logger.debug('📊 Scheduler status retrieved', status);
-    return status;
-  }
-
-  static initializeScheduler(): void {
-    logger.info('🚀 Initializing price update scheduler...');
-    this.startPriceUpdateScheduler();
   }
 }

@@ -91,32 +91,4 @@ export class EventService extends EventEmitter {
       totalListeners: eventService.listenerCount('alertTriggered'),
     });
   }
-
-  static removeAlertTriggeredListener(listener: EventListener): void {
-    const eventService = EventService.getInstance();
-
-    logger.info('🗑️ Removing event listener', {
-      listenerName: listener.constructor.name,
-      currentListeners: eventService.listenerCount('alertTriggered'),
-    });
-
-    eventService.removeListener('alertTriggered', listener.onAlertTriggered);
-
-    logger.info('✅ Event listener removed successfully', {
-      listenerName: listener.constructor.name,
-      remainingListeners: eventService.listenerCount('alertTriggered'),
-    });
-  }
-
-  static getListenerCount(): number {
-    const eventService = EventService.getInstance();
-    const count = eventService.listenerCount('alertTriggered');
-
-    logger.debug('📊 Getting listener count', {
-      count,
-      eventType: 'alertTriggered',
-    });
-
-    return count;
-  }
 }
