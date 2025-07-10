@@ -8,11 +8,27 @@ export class CryptocurrencyController {
     try {
       const cryptocurrencies =
         await CryptocurrencyService.getAllCryptocurrencies();
+      
+      // Add a helpful message for cryptocurrencies without prices
+      const cryptocurrenciesWithStatus = cryptocurrencies.map(crypto => ({
+        ...crypto,
+        priceStatus: crypto.currentPrice ? 'available' : 'pending',
+        message: crypto.currentPrice ? null : 'Price will be updated by the scheduler'
+      }));
+
       logger.debug("✅ Retrieved cryptocurrencies", {
         count: cryptocurrencies.length,
+        withPrices: cryptocurrencies.filter(c => c.currentPrice).length,
+        withoutPrices: cryptocurrencies.filter(c => !c.currentPrice).length,
       });
+      
       res.json({
-        cryptocurrencies,
+        cryptocurrencies: cryptocurrenciesWithStatus,
+        summary: {
+          total: cryptocurrencies.length,
+          withPrices: cryptocurrencies.filter(c => c.currentPrice).length,
+          withoutPrices: cryptocurrencies.filter(c => !c.currentPrice).length,
+        }
       });
     } catch (error: any) {
       logger.error("❌ Failed to fetch cryptocurrencies", {
@@ -38,8 +54,15 @@ export class CryptocurrencyController {
         });
       }
 
+      // Add status information
+      const response = {
+        ...cryptocurrency,
+        priceStatus: cryptocurrency.currentPrice ? 'available' : 'pending',
+        message: cryptocurrency.currentPrice ? null : 'Price will be updated by the scheduler'
+      };
+
       res.json({
-        cryptocurrency,
+        cryptocurrency: response,
       });
     } catch (error: any) {
       res.status(500).json({

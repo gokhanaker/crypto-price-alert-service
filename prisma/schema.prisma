@@ -30,7 +30,7 @@ model Cryptocurrency {
   coinId        String   @unique // CoinGecko ID (e.g., 'bitcoin', 'ethereum')
   symbol        String   // e.g., 'BTC', 'ETH'
   name          String   // e.g., 'Bitcoin', 'Ethereum'
-  currentPrice  Decimal  @default(0)
+  currentPrice  Decimal? @db.Decimal(65, 30) // Allow NULL initially
   lastUpdated   DateTime @default(now())
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
