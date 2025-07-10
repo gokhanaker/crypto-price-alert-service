@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import { config } from "@/config/env";
 import prisma from "@/config/database";
 import { SchedulerService } from "@/services/schedulerService";
-import { PriceUpdateService } from "@/services/priceUpdateService";
 import { logger } from "@/services/loggerService";
 
 export class HealthController {
@@ -24,7 +23,6 @@ export class HealthController {
       };
 
       const schedulerStatus = SchedulerService.getSchedulerStatus();
-      const priceStatus = await PriceUpdateService.getPriceUpdateStatus();
 
       const healthStatus = {
         status: "OK",
@@ -33,14 +31,12 @@ export class HealthController {
         database: "connected",
         system: systemInfo,
         scheduler: schedulerStatus,
-        prices: priceStatus,
       };
 
       logger.debug("✅ Health check passed", {
         environment: config.nodeEnv,
         uptime: systemInfo.uptime,
         schedulerActive: schedulerStatus.isRunning,
-        totalCryptocurrencies: priceStatus.totalCryptocurrencies,
       });
 
       res.json(healthStatus);
@@ -68,20 +64,14 @@ export class HealthController {
       logger.info("📊 Getting scheduler health status");
 
       const schedulerStatus = SchedulerService.getSchedulerStatus();
-      const priceStatus = await PriceUpdateService.getPriceUpdateStatus();
 
       logger.debug("✅ Scheduler health retrieved", {
         schedulerStatus,
-        priceStatus: {
-          totalCryptocurrencies: priceStatus.totalCryptocurrencies,
-          lastUpdated: priceStatus.lastUpdated,
-        },
       });
 
       res.json({
         success: true,
         scheduler: schedulerStatus,
-        prices: priceStatus,
       });
     } catch (error: any) {
       logger.error("❌ Error getting scheduler health", {

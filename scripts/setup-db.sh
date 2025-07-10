@@ -1,33 +1,66 @@
 #!/bin/bash
 
-echo "🚀 Crypto Price Alert Service - Database Setup"
-echo "=============================================="
+echo "🚀 Setting up Crypto Price Alert Service Database..."
 
-# Check if database is running
-echo "🔍 Checking if database is running..."
-if ! docker-compose ps postgres | grep -q "Up"; then
-    echo "❌ Database is not running. Starting PostgreSQL..."
-    docker-compose up -d postgres
-    echo "⏳ Waiting for database to be ready..."
-    sleep 10
-else
-    echo "✅ Database is already running"
-fi
-
-# Install dependencies if needed
-echo "📦 Installing dependencies..."
-npm install
+# Run database migrations
+echo "📊 Running database migrations..."
+npm run db:migrate
 
 # Generate Prisma client
 echo "🔧 Generating Prisma client..."
-npx prisma generate
+npm run db:generate
 
-# Run migrations
-echo "🗄️ Running database migrations..."
-npx prisma migrate dev
+# Optional: Fetch real prices and update the database
+echo "💰 Fetching real cryptocurrency prices..."
+node -e "
+const { PrismaClient } = require('@prisma/client');
+const axios = require('axios');
 
-echo ""
-echo "✅ Database setup completed!"
-echo "📊 Database now contains 8 default cryptocurrencies"
-echo "🚀 You can now start your server with: npm run dev"
-echo "🔗 Check your database with: npm run db:studio" 
+const prisma = new PrismaClient();
+
+async function updatePrices() {
+  try {
+    const cryptocurrencies = await prisma.cryptocurrency.findMany();
+    const coinIds = cryptocurrencies.map(crypto => crypto.coinId);
+    
+    console.log('Fetching prices for:', coinIds.join(', '));
+    
+    const response = await axios.get('https://api.coingecko.com/api/v3/simple/price', {
+      params: {
+        ids: coinIds.join(','),
+        vs_currencies: 'usd'
+      }
+    });
+    
+    const prices = response.data;
+    
+    for (const crypto of cryptocurrencies) {
+      const price = prices[crypto.coinId]?.usd;
+      if (price) {
+        await prisma.cryptocurrency.update({
+          where: { id: crypto.id },
+          data: {
+            currentPrice: price,
+            lastUpdated: new Date()
+          }
+        });
+        console.log(`✅ Updated ${crypto.name} price to $${price}`);
+      } else {
+        console.log(`⚠️  No price data for ${crypto.name}`);
+      }
+    }
+    
+    console.log('✅ All prices updated successfully!');
+  } catch (error) {
+    console.error('❌ Error updating prices:', error.message);
+    console.log('⚠️  Using default prices from migration...');
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
+updatePrices();
+"
+
+echo "✅ Database setup complete!"
+echo "🎉 Crypto Price Alert Service is ready to use!" 
