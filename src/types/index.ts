@@ -28,7 +28,6 @@ export interface Alert {
   cryptocurrencyId: string;
   alertType: AlertType;
   targetPrice: any; // Using 'any' to handle Prisma's Decimal type
-  isActive: boolean;
   isTriggered: boolean;
   triggeredPrice: any | null; // Using 'any' to handle Prisma's Decimal type
   triggeredAt: Date | null;
@@ -58,7 +57,6 @@ export interface CreateAlertRequest {
 export interface UpdateAlertRequest {
   alertType?: AlertType;
   targetPrice?: number;
-  isActive?: boolean;
 }
 
 // API Response Types

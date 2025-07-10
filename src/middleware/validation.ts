@@ -37,5 +37,4 @@ export const createAlertSchema = Joi.object({
 export const updateAlertSchema = Joi.object({
   alertType: Joi.string().valid("ABOVE", "BELOW").optional(),
   targetPrice: Joi.number().positive().optional(),
-  isActive: Joi.boolean().optional(),
 });

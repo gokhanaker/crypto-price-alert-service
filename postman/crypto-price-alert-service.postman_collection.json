@@ -100,7 +100,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"targetPrice\": 55000,\n  \"isActive\": true\n}"
+              "raw": "{\n  \"targetPrice\": 55000\n}"
             },
             "url": { "raw": "http://localhost:6000/api/alerts/{{alertId}}", "protocol": "http", "host": ["localhost"], "port": "6000", "path": ["api", "alerts", "{{alertId}}"] }
           }

@@ -35,7 +35,6 @@ CREATE TABLE "alerts" (
     "cryptocurrencyId" TEXT NOT NULL,
     "alertType" "AlertType" NOT NULL,
     "targetPrice" DECIMAL(65,30) NOT NULL,
-    "isActive" BOOLEAN NOT NULL DEFAULT true,
     "isTriggered" BOOLEAN NOT NULL DEFAULT false,
     "triggeredPrice" DECIMAL(65,30),
     "triggeredAt" TIMESTAMP(3),

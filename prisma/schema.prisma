@@ -47,7 +47,6 @@ model Alert {
   cryptocurrencyId String
   alertType       AlertType
   targetPrice     Decimal
-  isActive        Boolean    @default(true)
   isTriggered     Boolean    @default(false) // Track if alert has been triggered
   triggeredPrice  Decimal?   // Price when alert was triggered
   triggeredAt     DateTime?  // When the alert was triggered

@@ -182,7 +182,6 @@ export class AlertService {
       const alerts = await prisma.alert.findMany({
         where: {
           cryptocurrencyId,
-          isActive: true,
           isTriggered: false, // Only check untriggered alerts
         },
         include: {
