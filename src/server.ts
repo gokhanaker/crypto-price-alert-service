@@ -1,9 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
-import morgan from 'morgan';
 import rateLimit from 'express-rate-limit';
-import compression from 'compression';
 import { config } from '@/config/env';
 import { logger } from '@/services/loggerService';
 import authRoutes from '@/routes/auth';
@@ -48,8 +46,6 @@ app.use(
     origin: config.corsOrigin,
   })
 );
-app.use(compression());
-app.use(morgan('combined'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

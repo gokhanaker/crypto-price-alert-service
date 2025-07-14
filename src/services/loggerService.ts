@@ -55,11 +55,4 @@ const logger = winston.createLogger({
   transports,
 });
 
-// Create a stream object for Morgan
-const stream = {
-  write: (message: string) => {
-    logger.http(message.trim());
-  },
-};
-
-export { logger, stream };
+export { logger };

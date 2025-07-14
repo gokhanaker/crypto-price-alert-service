@@ -7,7 +7,6 @@ export class CryptocurrencyController {
     try {
       const cryptocurrencies = await CryptocurrencyService.getAllCryptocurrencies();
 
-      // Add a helpful message for cryptocurrencies without prices
       const cryptocurrenciesWithStatus = cryptocurrencies.map(crypto => ({
         ...crypto,
         priceStatus: crypto.currentPrice ? 'available' : 'pending',
@@ -44,7 +43,6 @@ export class CryptocurrencyController {
         });
       }
 
-      // Add status information
       const response = {
         ...cryptocurrency,
         priceStatus: cryptocurrency.currentPrice ? 'available' : 'pending',
