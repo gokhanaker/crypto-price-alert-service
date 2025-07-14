@@ -11,13 +11,12 @@ datasource db {
 }
 
 model User {
-  id           String   @id @default(uuid())
-  email        String   @unique
+  id           String   @id @default(uuid()) @db.Uuid
+  email        String   @unique @db.VarChar(255)
   passwordHash String
-  firstName    String?
-  lastName     String?
+  firstName    String?  @db.VarChar(50)
+  lastName     String?  @db.VarChar(50)
   createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
 
   // Relations
   alerts Alert[]
@@ -26,12 +25,11 @@ model User {
 }
 
 model Cryptocurrency {
-  id            String   @id @default(uuid())
-  coinId        String   @unique // CoinGecko ID (e.g., 'bitcoin', 'ethereum')
-  symbol        String   // e.g., 'BTC', 'ETH'
-  name          String   // e.g., 'Bitcoin', 'Ethereum'
+  id            String   @id @default(uuid()) @db.Uuid
+  coinId        String   @unique @db.VarChar(50) // CoinGecko ID (e.g., 'bitcoin', 'ethereum')
+  symbol        String   @unique @db.VarChar(10) // e.g., 'BTC', 'ETH'
+  name          String   @db.VarChar(100) // e.g., 'Bitcoin', 'Ethereum'
   currentPrice  Decimal? @db.Decimal(65, 30) // Allow NULL initially
-  lastUpdated   DateTime @default(now())
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
@@ -42,9 +40,9 @@ model Cryptocurrency {
 }
 
 model Alert {
-  id              String     @id @default(uuid())
-  userId          String
-  cryptocurrencyId String
+  id              String     @id @default(uuid()) @db.Uuid
+  userId          String     @db.Uuid
+  cryptocurrencyId String     @db.Uuid
   alertType       AlertType
   targetPrice     Decimal
   isTriggered     Boolean    @default(false) // Track if alert has been triggered
@@ -63,4 +61,4 @@ model Alert {
 enum AlertType {
   ABOVE
   BELOW
-} 
+}

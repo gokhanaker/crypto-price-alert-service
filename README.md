@@ -159,8 +159,7 @@ Content-Type: application/json
     "email": "user@example.com",
     "firstName": "John",
     "lastName": "Doe",
-    "createdAt": "2024-01-01T00:00:00.000Z",
-    "updatedAt": "2024-01-01T00:00:00.000Z"
+    "createdAt": "2024-01-01T00:00:00.000Z"
   }
 }
 ```
@@ -184,7 +183,7 @@ GET /api/cryptocurrencies
       "symbol": "BTC",
       "name": "Bitcoin",
       "currentPrice": "45000.00",
-      "lastUpdated": "2024-01-01T00:00:00.000Z"
+      "updatedAt": "2024-01-01T00:00:00.000Z"
     }
   ]
 }
@@ -206,7 +205,7 @@ GET /api/cryptocurrencies/:id
     "symbol": "BTC",
     "name": "Bitcoin",
     "currentPrice": 50000.0,
-    "lastUpdated": "2024-01-01T00:00:00.000Z"
+    "updatedAt": "2024-01-01T00:00:00.000Z"
   }
 }
 ```

@@ -9,7 +9,7 @@ if ! docker-compose ps postgres | grep -q "Up"; then
     echo "❌ Database is not running. Starting PostgreSQL..."
     docker-compose up -d postgres
     echo "⏳ Waiting for database to be ready..."
-    sleep 10
+    sleep 15
 else
     echo "✅ Database is already running"
 fi
@@ -22,36 +22,17 @@ npm install
 echo "🔧 Generating Prisma client..."
 npx prisma generate
 
-# Run migrations (this will apply the base_schema migration with 10 cryptocurrencies)
-echo "🗄️ Running database migrations..."
-npx prisma migrate dev
+# Check if database is already set up
+echo "🔍 Checking if database is already set up..."
+DB_SETUP=$(PGPASSWORD=postgres psql -h localhost -p 5432 -U postgres -d crypto_price_alerts_db -t -c "SELECT COUNT(*) FROM cryptocurrencies;" 2>/dev/null | tr -d ' ')
 
-# Check if cryptocurrencies exist, if not, reset the database
-echo "🔍 Checking if cryptocurrencies exist..."
-CRYPTO_COUNT=$(node -e "
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
-
-async function checkCryptos() {
-  try {
-    const count = await prisma.cryptocurrency.count();
-    console.log(count);
-  } catch (error) {
-    console.log('0');
-  } finally {
-    await prisma.\$disconnect();
-  }
-}
-
-checkCryptos();
-")
-
-if [ "$CRYPTO_COUNT" -eq 0 ]; then
-    echo "⚠️  No cryptocurrencies found. Resetting database..."
-    npx prisma migrate reset --force
-    echo "✅ Database reset complete with 10 cryptocurrencies"
+if [ "$DB_SETUP" = "10" ]; then
+    echo "✅ Database is already set up with 10 cryptocurrencies"
 else
-    echo "✅ Found $CRYPTO_COUNT cryptocurrencies in database"
+    echo "🗄️ Setting up fresh database..."
+    # Apply migration directly using SQL to avoid advisory lock issues
+    PGPASSWORD=postgres psql -h localhost -p 5432 -U postgres -d crypto_price_alerts_db -f prisma/migrations/20250714113734_init/migration.sql > /dev/null 2>&1
+    echo "✅ Database migration applied successfully"
 fi
 
 echo ""

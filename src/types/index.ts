@@ -6,7 +6,6 @@ export interface User {
   firstName: string | null;
   lastName: string | null;
   createdAt: Date;
-  updatedAt: Date;
 }
 
 export interface Cryptocurrency {
@@ -15,7 +14,6 @@ export interface Cryptocurrency {
   symbol: string;
   name: string;
   currentPrice: any | null; // Using 'any' to handle Prisma's Decimal type, can be null until scheduler updates with real market price
-  lastUpdated: Date;
   createdAt: Date;
   updatedAt: Date;
 }

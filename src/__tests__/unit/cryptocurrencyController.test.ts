@@ -29,7 +29,7 @@ describe('CryptocurrencyController', () => {
           symbol: 'BTC',
           name: 'Bitcoin',
           currentPrice: '50000.00',
-          lastUpdated: new Date(),
+          updatedAt: new Date(),
         },
         {
           id: 'crypto-2',
@@ -37,7 +37,7 @@ describe('CryptocurrencyController', () => {
           symbol: 'ETH',
           name: 'Ethereum',
           currentPrice: null,
-          lastUpdated: new Date(),
+          updatedAt: new Date(),
         },
       ];
 
@@ -133,7 +133,7 @@ describe('CryptocurrencyController', () => {
         symbol: 'BTC',
         name: 'Bitcoin',
         currentPrice: '50000.00',
-        lastUpdated: new Date(),
+        updatedAt: new Date(),
       };
 
       (CryptocurrencyService.getCryptocurrencyById as jest.Mock).mockResolvedValue(
@@ -160,7 +160,7 @@ describe('CryptocurrencyController', () => {
         symbol: 'ETH',
         name: 'Ethereum',
         currentPrice: null,
-        lastUpdated: new Date(),
+        updatedAt: new Date(),
       };
 
       (CryptocurrencyService.getCryptocurrencyById as jest.Mock).mockResolvedValue(

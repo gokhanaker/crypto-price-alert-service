@@ -33,7 +33,6 @@ export class PriceUpdateService {
             where: { id: crypto.id },
             data: {
               currentPrice: price,
-              lastUpdated: new Date(),
             },
           });
 
