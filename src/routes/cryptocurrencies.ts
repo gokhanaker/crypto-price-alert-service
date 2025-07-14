@@ -4,7 +4,6 @@ import { authenticateToken } from '@/middleware/auth';
 
 const router = Router();
 
-// Apply authentication to all cryptocurrency routes
 router.use(authenticateToken);
 
 router.get('/', CryptocurrencyController.getAllCryptocurrencies);

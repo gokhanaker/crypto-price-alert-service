@@ -4,7 +4,6 @@ import { authenticateToken } from '@/middleware/auth';
 
 const router = Router();
 
-// Apply authentication to all health routes
 router.use(authenticateToken);
 
 router.get('/', HealthController.getHealthStatus);

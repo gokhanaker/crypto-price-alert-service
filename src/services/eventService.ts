@@ -24,8 +24,7 @@ export class EventService extends EventEmitter {
 
   private constructor() {
     super();
-    this.setMaxListeners(20); // Allow multiple listeners
-    logger.info('📡 EventService initialized');
+    this.setMaxListeners(20);
   }
 
   static getInstance(): EventService {
@@ -38,15 +37,6 @@ export class EventService extends EventEmitter {
   static emitAlertTriggered(event: AlertTriggeredEvent): void {
     const eventService = EventService.getInstance();
 
-    logger.info('📡 Emitting alert triggered event', {
-      alertId: event.alertId,
-      userId: event.userId,
-      cryptocurrency: event.cryptocurrencySymbol,
-      alertType: event.alertType,
-      targetPrice: event.targetPrice,
-      triggeredPrice: event.triggeredPrice,
-    });
-
     eventService.emit('alertTriggered', event);
 
     logger.info('📡 Event emitted successfully', {
@@ -58,24 +48,9 @@ export class EventService extends EventEmitter {
   static onAlertTriggered(listener: EventListener): void {
     const eventService = EventService.getInstance();
 
-    logger.info('🎧 Registering event listener', {
-      listenerName: listener.constructor.name,
-      currentListeners: eventService.listenerCount('alertTriggered'),
-    });
-
     eventService.on('alertTriggered', async (event: AlertTriggeredEvent) => {
       try {
-        logger.debug('🎧 Event listener processing event', {
-          alertId: event.alertId,
-          listenerName: listener.constructor.name,
-        });
-
         await listener.onAlertTriggered(event);
-
-        logger.debug('✅ Event listener processed successfully', {
-          alertId: event.alertId,
-          listenerName: listener.constructor.name,
-        });
       } catch (error) {
         logger.error('❌ Error in event listener', {
           alertId: event.alertId,
@@ -84,11 +59,6 @@ export class EventService extends EventEmitter {
           stack: error instanceof Error ? error.stack : undefined,
         });
       }
-    });
-
-    logger.info('✅ Event listener registered successfully', {
-      listenerName: listener.constructor.name,
-      totalListeners: eventService.listenerCount('alertTriggered'),
     });
   }
 }

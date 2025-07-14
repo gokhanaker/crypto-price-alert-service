@@ -115,13 +115,6 @@ describe('CryptocurrencyController', () => {
 
       const req: any = {};
       await CryptocurrencyController.getAllCryptocurrencies(req, res);
-
-      expect(logger.info).toHaveBeenCalledWith('📊 Getting all cryptocurrencies');
-      expect(logger.debug).toHaveBeenCalledWith('✅ Retrieved cryptocurrencies', {
-        count: 2,
-        withPrices: 1,
-        withoutPrices: 1,
-      });
     });
   });
 

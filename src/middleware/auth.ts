@@ -25,19 +25,3 @@ export const authenticateToken = async (req: Request, res: Response, next: NextF
     return res.status(403).json({ error: 'Invalid or expired token' });
   }
 };
-
-export const optionalAuth = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const authHeader = req.headers.authorization;
-    const token = authHeader && authHeader.split(' ')[1];
-
-    if (token) {
-      const user = await AuthService.verifyToken(token);
-      req.user = user;
-    }
-    next();
-  } catch (error) {
-    // Continue without authentication
-    next();
-  }
-};

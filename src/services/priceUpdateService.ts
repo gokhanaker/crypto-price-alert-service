@@ -7,18 +7,12 @@ import { logger } from '@/services/loggerService';
 export class PriceUpdateService {
   static async updateAllPrices(): Promise<void> {
     try {
-      logger.info('🔄 Starting price update for all cryptocurrencies');
-
       const cryptocurrencies = await prisma.cryptocurrency.findMany();
 
       if (cryptocurrencies.length === 0) {
         logger.warn('⚠️  No cryptocurrencies found in database');
         return;
       }
-
-      logger.info('📊 Found cryptocurrencies to update', {
-        count: cryptocurrencies.length,
-      });
 
       const coinIds = cryptocurrencies.map((crypto: any) => crypto.coinId);
       const prices = await this.fetchPricesFromCoinGecko(coinIds);
@@ -59,11 +53,6 @@ export class PriceUpdateService {
 
   private static async fetchPricesFromCoinGecko(coinIds: string[]): Promise<any> {
     try {
-      logger.debug('🌐 Fetching prices from CoinGecko API', {
-        coinCount: coinIds.length,
-        endpoint: 'simple/price',
-      });
-
       const response = await axios.get(`${config.coinGeckoApiUrl}/simple/price`, {
         params: {
           ids: coinIds.join(','),
@@ -74,11 +63,6 @@ export class PriceUpdateService {
           'User-Agent': 'CryptoPriceAlertService/1.0',
           Accept: 'application/json',
         },
-      });
-
-      logger.debug('✅ Successfully fetched prices from primary endpoint', {
-        coinCount: coinIds.length,
-        responseStatus: response.status,
       });
 
       return response.data;

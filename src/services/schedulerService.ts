@@ -15,13 +15,10 @@ export class SchedulerService {
       nextUpdate: priceUpdateTask ? new Date(Date.now() + 2 * 60 * 1000) : undefined,
     };
 
-    logger.debug('📊 Scheduler status retrieved', status);
     return status;
   }
 
   static initializeScheduler(): void {
-    logger.info('🚀 Initializing price update scheduler...');
-
     if (this.isRunning) {
       logger.warn('⚠️  Price update scheduler is already running');
       return;
@@ -29,15 +26,9 @@ export class SchedulerService {
 
     const interval = parseInt(config.priceUpdateInterval) || 1;
 
-    logger.info('⏰ Starting price update scheduler', {
-      interval,
-      timezone: 'UTC',
-    });
-
     cron.schedule(
       `*/${interval} * * * *`,
       async () => {
-        logger.info('🕐 Scheduled price update starting...');
         try {
           await PriceUpdateService.updateAllPrices();
           logger.info('✅ Scheduled price update completed successfully');
@@ -55,9 +46,5 @@ export class SchedulerService {
     );
 
     this.isRunning = true;
-    logger.info('⏰ Price update scheduler started', {
-      interval,
-      nextUpdate: new Date(Date.now() + interval * 60 * 1000).toISOString(),
-    });
   }
 }

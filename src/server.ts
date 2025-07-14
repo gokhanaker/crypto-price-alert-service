@@ -83,12 +83,7 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
 
 const initializeServices = async () => {
   try {
-    logger.info('🚀 Initializing services...');
-
     EventController.getInstance();
-    logger.info('✅ EventController initialized');
-
-    logger.info('✅ PriceUpdateService ready');
     SchedulerService.initializeScheduler();
 
     logger.info('✅ SchedulerService initialized');

@@ -9,6 +9,8 @@ export const config = {
   databaseUrl:
     process.env.DATABASE_URL ||
     'postgresql://postgres:postgres@localhost:5432/crypto_price_alert_db',
+
+  // Third party API
   coinGeckoApiUrl: 'https://api.coingecko.com/api/v3',
   priceUpdateInterval: process.env.PRICE_UPDATE_INTERVAL || '1', // minutes
   enableRealTimeUpdates: process.env.ENABLE_REALTIME_UPDATES === 'true',

@@ -4,7 +4,6 @@ import { logger } from '@/services/loggerService';
 
 export class CryptocurrencyController {
   static async getAllCryptocurrencies(req: Request, res: Response) {
-    logger.info('📊 Getting all cryptocurrencies');
     try {
       const cryptocurrencies = await CryptocurrencyService.getAllCryptocurrencies();
 
@@ -14,12 +13,6 @@ export class CryptocurrencyController {
         priceStatus: crypto.currentPrice ? 'available' : 'pending',
         message: crypto.currentPrice ? null : 'Price will be updated by the scheduler',
       }));
-
-      logger.debug('✅ Retrieved cryptocurrencies', {
-        count: cryptocurrencies.length,
-        withPrices: cryptocurrencies.filter(c => c.currentPrice).length,
-        withoutPrices: cryptocurrencies.filter(c => !c.currentPrice).length,
-      });
 
       res.json({
         cryptocurrencies: cryptocurrenciesWithStatus,

@@ -8,8 +8,6 @@ export class HealthController {
   // Get health status of the app
   static async getHealthStatus(req: Request, res: Response): Promise<void> {
     try {
-      logger.debug('🏥 Health check requested');
-
       // Test database connection
       await prisma.$queryRaw`SELECT 1`;
 
@@ -22,11 +20,6 @@ export class HealthController {
         database: 'connected',
         scheduler: schedulerStatus,
       };
-
-      logger.debug('✅ Health check passed', {
-        environment: config.nodeEnv,
-        schedulerActive: schedulerStatus.isRunning,
-      });
 
       res.json(healthStatus);
     } catch (error) {
@@ -51,10 +44,6 @@ export class HealthController {
       logger.info('📊 Getting scheduler health status');
 
       const schedulerStatus = SchedulerService.getSchedulerStatus();
-
-      logger.debug('✅ Scheduler health retrieved', {
-        schedulerStatus,
-      });
 
       res.json({
         success: true,

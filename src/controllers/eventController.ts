@@ -9,7 +9,6 @@ export class EventController implements EventListener {
   private constructor() {
     // Register this controller as an event listener
     EventService.onAlertTriggered(this);
-    logger.info('🎯 EventController initialized and registered as event listener');
   }
 
   // Get singleton instance
@@ -54,12 +53,6 @@ export class EventController implements EventListener {
   // Simulate email notification to user
   private async handleEmailNotification(event: AlertTriggeredEvent): Promise<void> {
     try {
-      logger.info('📧 Starting email notification process', {
-        alertId: event.alertId,
-        userEmail: event.userEmail,
-        cryptocurrency: event.cryptocurrencySymbol,
-      });
-
       await new Promise(resolve => setTimeout(resolve, 100));
 
       logger.info('📧 Email notification sent successfully', {
@@ -82,12 +75,6 @@ export class EventController implements EventListener {
   // Simulate push notification to user
   private async handlePushNotification(event: AlertTriggeredEvent): Promise<void> {
     try {
-      logger.info('📱 Starting push notification process', {
-        alertId: event.alertId,
-        userId: event.userId,
-        cryptocurrency: event.cryptocurrencySymbol,
-      });
-
       await new Promise(resolve => setTimeout(resolve, 50));
 
       logger.info('📱 Push notification sent successfully', {
