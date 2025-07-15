@@ -3,7 +3,7 @@ import { createTestApp } from '../../test-utils/integrationSetup';
 
 const app = createTestApp();
 
-describe('Auth Integration (Simple)', () => {
+describe('Auth Integration', () => {
   it('should register a user successfully', async () => {
     const userData = {
       email: 'test@example.com',

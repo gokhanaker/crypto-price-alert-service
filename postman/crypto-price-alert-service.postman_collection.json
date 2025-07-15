@@ -2,7 +2,7 @@
   "info": {
     "name": "Crypto Price Alert Service",
     "_postman_id": "crypto-price-alert-service-collection",
-    "description": "Postman collection for Crypto Price Alert Service with event-driven alert system",
+    "description": "Postman collection for Crypto Price Alert Service",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -150,4 +150,4 @@
     { "key": "cryptoId", "value": "" },
     { "key": "alertId", "value": "" }
   ]
-} 
+}

@@ -4,10 +4,9 @@ A Node.js-based cryptocurrency price alert service that enables users to set ale
 
 ## 🚀 Features
 
-- **User Registration & Authentication**: JWT-based authentication, Registering user with secure password hashing
+- **User Registration & Authentication**: Registering user with secure password hashing and JWT-based authentication
 - **Cryptocurrency Management**: Real-time price data from CoinGecko API
 - **Enhanced Price Alerts**: Set alerts for when prices go above or below target values
-- **Event-Driven Notifications**: Event-based architecture for alert notifications
 - **Automatic Price Updates**: Cron job scheduler updates prices every minute
 - **Rate Limiting**: Protection against API abuse
 - **Enhanced Security**: Helmet security headers and CORS configuration
@@ -22,7 +21,7 @@ A Node.js-based cryptocurrency price alert service that enables users to set ale
 - **Validation**: Joi
 - **External API**: CoinGecko for cryptocurrency data
 - **Testing**: Jest
-- **Logging**: Winston with file and console transports
+- **Logging**: Winston
 - **Security**: Helmet, Rate Limiting
 
 ## 🏗️ Implementation Decisions
@@ -347,9 +346,9 @@ npm run db:studio       # Open Prisma Studio
 npm run db:reset        # Reset database
 
 # Testing
-npm test                # Run tests
-npm run test:watch      # Run tests in watch mode
-npm run test:coverage   # Run tests with coverage
+npm test                      # Run tests
+npm run test:unit             # Run unit tests
+npm run test:integration      # Run integration tests
 
 # Linting
 npm run lint            # Run ESLint

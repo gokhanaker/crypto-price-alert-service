@@ -3,7 +3,7 @@ import { createTestApp } from '../../test-utils/integrationSetup';
 
 const app = createTestApp();
 
-describe('Alert Integration (Simple)', () => {
+describe('Alert Integration', () => {
   it('should create an alert successfully', async () => {
     const alertData = {
       cryptocurrencyId: 'crypto-1',
