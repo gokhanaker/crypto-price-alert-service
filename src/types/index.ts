@@ -82,3 +82,17 @@ export interface CoinGeckoCoin {
   current_price: number;
   last_updated: string;
 }
+
+export interface AlertTriggeredEvent {
+  alertId: string;
+  userId: string;
+  cryptocurrencyId: string;
+  cryptocurrencySymbol: string;
+  cryptocurrencyName: string;
+  alertType: 'ABOVE' | 'BELOW';
+  targetPrice: number;
+  triggeredPrice: number;
+  triggeredAt: Date;
+  userEmail: string;
+  userName: string;
+}

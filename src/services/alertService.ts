@@ -1,7 +1,8 @@
 import prisma from '@/config/database';
 import { Alert, CreateAlertRequest, UpdateAlertRequest, AlertWithDetails } from '@/types';
 import { CryptocurrencyService } from '@/services/cryptocurrencyService';
-import { EventService, AlertTriggeredEvent } from '@/services/eventService';
+import { EventService } from '@/services/eventService';
+import { AlertTriggeredEvent } from '@/types';
 import { logger } from '@/services/loggerService';
 
 export class AlertService {
@@ -55,6 +56,8 @@ export class AlertService {
       orderBy: { createdAt: 'desc' },
     })) as AlertWithDetails[];
 
+    logger.info('✅ Fetched user alerts', { userId, count: alerts.length });
+
     return alerts;
   }
 
@@ -76,6 +79,11 @@ export class AlertService {
           },
         },
       },
+    });
+
+    logger.info('✅ Fetched alert by ID', {
+      alertId,
+      userId,
     });
 
     return alert;

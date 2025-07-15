@@ -19,8 +19,8 @@ export const validateRequest = (schema: Joi.ObjectSchema) => {
 export const userRegistrationSchema = Joi.object({
   email: Joi.string().email().required(),
   password: Joi.string().min(6).required(),
-  firstName: Joi.string().optional(),
-  lastName: Joi.string().optional(),
+  firstName: Joi.string().optional().required(),
+  lastName: Joi.string().optional().required(),
 });
 
 export const userLoginSchema = Joi.object({
@@ -35,6 +35,6 @@ export const createAlertSchema = Joi.object({
 });
 
 export const updateAlertSchema = Joi.object({
-  alertType: Joi.string().valid('ABOVE', 'BELOW').optional(),
-  targetPrice: Joi.number().positive().optional(),
+  alertType: Joi.string().valid('ABOVE', 'BELOW').required(),
+  targetPrice: Joi.number().positive().required(),
 });

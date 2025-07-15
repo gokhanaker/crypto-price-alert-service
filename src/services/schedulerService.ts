@@ -12,7 +12,7 @@ export class SchedulerService {
 
     const status = {
       isRunning: this.isRunning,
-      nextUpdate: priceUpdateTask ? new Date(Date.now() + 2 * 60 * 1000) : undefined,
+      nextUpdate: priceUpdateTask ? new Date(Date.now() + 1 * 60 * 1000) : undefined,
     };
 
     return status;

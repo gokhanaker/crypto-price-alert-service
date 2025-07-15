@@ -1,5 +1,6 @@
-import { EventService, AlertTriggeredEvent, EventListener } from '../services/eventService';
-import { logger } from '../services/loggerService';
+import { EventService, EventListener } from '@/services/eventService';
+import { AlertTriggeredEvent } from '@/types';
+import { logger } from '@/services/loggerService';
 
 // THIS IS A MOCK EVENT CONTROLLER FOR DEVELOPMENT PURPOSE ONLY
 // IT SHOULD BE REPLACED WITH A REAL EVENT CONSUMER SERVICE IN PRODUCTION
@@ -11,7 +12,6 @@ export class EventController implements EventListener {
     EventService.onAlertTriggered(this);
   }
 
-  // Get singleton instance
   static getInstance(): EventController {
     if (!EventController.instance) {
       EventController.instance = new EventController();
@@ -19,7 +19,6 @@ export class EventController implements EventListener {
     return EventController.instance;
   }
 
-  // Handle alert triggered event
   async onAlertTriggered(event: AlertTriggeredEvent): Promise<void> {
     logger.info('🎯 Event Controller received alert triggered event', {
       alertId: event.alertId,

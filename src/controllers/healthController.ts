@@ -5,7 +5,6 @@ import { SchedulerService } from '@/services/schedulerService';
 import { logger } from '@/services/loggerService';
 
 export class HealthController {
-  // Get health status of the app
   static async getHealthStatus(req: Request, res: Response): Promise<void> {
     try {
       // Test database connection
@@ -38,7 +37,6 @@ export class HealthController {
     }
   }
 
-  // Get health status of scheduler
   static async getSchedulerHealth(req: Request, res: Response): Promise<void> {
     try {
       logger.info('📊 Getting scheduler health status');

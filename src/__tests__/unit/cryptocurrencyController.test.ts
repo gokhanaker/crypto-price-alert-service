@@ -1,7 +1,9 @@
+import { Request, Response } from 'express';
 import { CryptocurrencyController } from '@/controllers/cryptocurrencyController';
 import { CryptocurrencyService } from '@/services/cryptocurrencyService';
 import { logger } from '@/services/loggerService';
 
+// Mock the services
 jest.mock('@/services/cryptocurrencyService');
 jest.mock('@/services/loggerService');
 
@@ -21,7 +23,7 @@ describe('CryptocurrencyController', () => {
   });
 
   describe('getAllCryptocurrencies', () => {
-    it('should return all cryptocurrencies with status information', async () => {
+    it('should return all cryptocurrencies', async () => {
       const mockCryptocurrencies = [
         {
           id: 'crypto-1',
@@ -50,23 +52,7 @@ describe('CryptocurrencyController', () => {
 
       expect(CryptocurrencyService.getAllCryptocurrencies).toHaveBeenCalled();
       expect(res.json).toHaveBeenCalledWith({
-        cryptocurrencies: [
-          {
-            ...mockCryptocurrencies[0],
-            priceStatus: 'available',
-            message: null,
-          },
-          {
-            ...mockCryptocurrencies[1],
-            priceStatus: 'pending',
-            message: 'Price will be updated by the scheduler',
-          },
-        ],
-        summary: {
-          total: 2,
-          withPrices: 1,
-          withoutPrices: 1,
-        },
+        cryptocurrencies: mockCryptocurrencies,
       });
     });
 
@@ -78,11 +64,6 @@ describe('CryptocurrencyController', () => {
 
       expect(res.json).toHaveBeenCalledWith({
         cryptocurrencies: [],
-        summary: {
-          total: 0,
-          withPrices: 0,
-          withoutPrices: 0,
-        },
       });
     });
 
@@ -102,24 +83,10 @@ describe('CryptocurrencyController', () => {
         error: 'Failed to fetch cryptocurrencies',
       });
     });
-
-    it('should log success with correct information', async () => {
-      const mockCryptocurrencies = [
-        { id: 'crypto-1', currentPrice: '50000.00' },
-        { id: 'crypto-2', currentPrice: null },
-      ];
-
-      (CryptocurrencyService.getAllCryptocurrencies as jest.Mock).mockResolvedValue(
-        mockCryptocurrencies
-      );
-
-      const req: any = {};
-      await CryptocurrencyController.getAllCryptocurrencies(req, res);
-    });
   });
 
   describe('getCryptocurrencyById', () => {
-    it('should return cryptocurrency by ID with status information', async () => {
+    it('should return cryptocurrency by ID', async () => {
       const mockCryptocurrency = {
         id: 'crypto-1',
         coinId: 'bitcoin',
@@ -138,15 +105,11 @@ describe('CryptocurrencyController', () => {
 
       expect(CryptocurrencyService.getCryptocurrencyById).toHaveBeenCalledWith('crypto-1');
       expect(res.json).toHaveBeenCalledWith({
-        cryptocurrency: {
-          ...mockCryptocurrency,
-          priceStatus: 'available',
-          message: null,
-        },
+        cryptocurrency: mockCryptocurrency,
       });
     });
 
-    it('should return cryptocurrency without price with pending status', async () => {
+    it('should return cryptocurrency with null price', async () => {
       const mockCryptocurrency = {
         id: 'crypto-2',
         coinId: 'ethereum',
@@ -164,11 +127,7 @@ describe('CryptocurrencyController', () => {
       await CryptocurrencyController.getCryptocurrencyById(req, res);
 
       expect(res.json).toHaveBeenCalledWith({
-        cryptocurrency: {
-          ...mockCryptocurrency,
-          priceStatus: 'pending',
-          message: 'Price will be updated by the scheduler',
-        },
+        cryptocurrency: mockCryptocurrency,
       });
     });
 

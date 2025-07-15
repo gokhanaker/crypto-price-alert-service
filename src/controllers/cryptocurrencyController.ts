@@ -7,19 +7,8 @@ export class CryptocurrencyController {
     try {
       const cryptocurrencies = await CryptocurrencyService.getAllCryptocurrencies();
 
-      const cryptocurrenciesWithStatus = cryptocurrencies.map(crypto => ({
-        ...crypto,
-        priceStatus: crypto.currentPrice ? 'available' : 'pending',
-        message: crypto.currentPrice ? null : 'Price will be updated by the scheduler',
-      }));
-
       res.json({
-        cryptocurrencies: cryptocurrenciesWithStatus,
-        summary: {
-          total: cryptocurrencies.length,
-          withPrices: cryptocurrencies.filter(c => c.currentPrice).length,
-          withoutPrices: cryptocurrencies.filter(c => !c.currentPrice).length,
-        },
+        cryptocurrencies,
       });
     } catch (error: any) {
       logger.error('❌ Failed to fetch cryptocurrencies', {
@@ -43,14 +32,8 @@ export class CryptocurrencyController {
         });
       }
 
-      const response = {
-        ...cryptocurrency,
-        priceStatus: cryptocurrency.currentPrice ? 'available' : 'pending',
-        message: cryptocurrency.currentPrice ? null : 'Price will be updated by the scheduler',
-      };
-
       res.json({
-        cryptocurrency: response,
+        cryptocurrency,
       });
     } catch (error: any) {
       res.status(500).json({

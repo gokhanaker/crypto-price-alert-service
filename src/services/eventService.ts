@@ -1,19 +1,6 @@
 import { EventEmitter } from 'events';
 import { logger } from '@/services/loggerService';
-
-export interface AlertTriggeredEvent {
-  alertId: string;
-  userId: string;
-  cryptocurrencyId: string;
-  cryptocurrencySymbol: string;
-  cryptocurrencyName: string;
-  alertType: 'ABOVE' | 'BELOW';
-  targetPrice: number;
-  triggeredPrice: number;
-  triggeredAt: Date;
-  userEmail: string;
-  userName: string;
-}
+import { AlertTriggeredEvent } from '@/types';
 
 export interface EventListener {
   onAlertTriggered(event: AlertTriggeredEvent): Promise<void>;

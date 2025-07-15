@@ -29,9 +29,7 @@ export class AuthService {
       },
     });
 
-    const token = jwt.sign({ userId: user.id, email: user.email }, config.jwtSecret, {
-      expiresIn: '24h',
-    });
+    const token = this.generateToken(user);
 
     const { passwordHash: _, ...userWithoutPassword } = user;
     return {
@@ -57,9 +55,7 @@ export class AuthService {
       throw new Error('Invalid email or password');
     }
 
-    const token = jwt.sign({ userId: user.id, email: user.email }, config.jwtSecret, {
-      expiresIn: '24h',
-    });
+    const token = this.generateToken(user);
 
     const { passwordHash: _, ...userWithoutPassword } = user;
     return {
@@ -88,5 +84,11 @@ export class AuthService {
     } catch (error) {
       throw new Error('Invalid token');
     }
+  }
+
+  private static generateToken(user: User): string {
+    return jwt.sign({ userId: user.id, email: user.email }, config.jwtSecret, {
+      expiresIn: '4h',
+    });
   }
 }

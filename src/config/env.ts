@@ -22,6 +22,7 @@ export const config = {
   // Security
   corsOrigin: process.env.CORS_ORIGIN || '*',
   helmetEnabled: process.env.HELMET_ENABLED !== 'false',
+  tokenExpiresIn: process.env.JWT_EXPIRES_IN || '4h',
 
   // Logging
   logLevel: process.env.LOG_LEVEL || 'info',
