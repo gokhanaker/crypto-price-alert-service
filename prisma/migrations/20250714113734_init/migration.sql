@@ -51,6 +51,10 @@ ALTER TABLE "alerts" ADD CONSTRAINT "alerts_userId_fkey" FOREIGN KEY ("userId") 
 -- AddForeignKey
 ALTER TABLE "alerts" ADD CONSTRAINT "alerts_cryptocurrencyId_fkey" FOREIGN KEY ("cryptocurrencyId") REFERENCES "cryptocurrencies"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
+-- CreateIndexes
+CREATE INDEX "idx_alerts_crypto_id_is_triggered" ON "alerts" ("cryptocurrencyId", "isTriggered");
+CREATE INDEX "idx_alerts_user_id_created_at" ON "alerts" ("userId", "createdAt" DESC);
+
 -- Insert default cryptocurrencies with NULL prices (will be updated by scheduler with real market prices)
 INSERT INTO "cryptocurrencies" ("coinId", "symbol", "name", "currentPrice", "createdAt", "updatedAt") VALUES
 ('bitcoin', 'BTC', 'Bitcoin', NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
