@@ -47,7 +47,7 @@ describe('CryptocurrencyController', () => {
         mockCryptocurrencies
       );
 
-      const req: any = {};
+      const req: any = { path: '/api/cryptocurrencies' };
       await CryptocurrencyController.getAllCryptocurrencies(req, res);
 
       expect(CryptocurrencyService.getAllCryptocurrencies).toHaveBeenCalled();
@@ -62,7 +62,7 @@ describe('CryptocurrencyController', () => {
     it('should handle empty cryptocurrency list', async () => {
       (CryptocurrencyService.getAllCryptocurrencies as jest.Mock).mockResolvedValue([]);
 
-      const req: any = {};
+      const req: any = { path: '/api/cryptocurrencies' };
       await CryptocurrencyController.getAllCryptocurrencies(req, res);
 
       expect(res.json).toHaveBeenCalledWith({
@@ -77,7 +77,7 @@ describe('CryptocurrencyController', () => {
       const error = new Error('Database connection failed');
       (CryptocurrencyService.getAllCryptocurrencies as jest.Mock).mockRejectedValue(error);
 
-      const req: any = {};
+      const req: any = { path: '/api/cryptocurrencies' };
       await CryptocurrencyController.getAllCryptocurrencies(req, res);
 
       expect(logger.error).toHaveBeenCalledWith('Failed to fetch cryptocurrencies', {
@@ -93,7 +93,7 @@ describe('CryptocurrencyController', () => {
           details: 'Database connection failed',
           timestamp: expect.any(String),
           requestId: expect.any(String),
-          path: expect.any(String),
+          path: '/api/cryptocurrencies',
         },
         data: null,
       });
@@ -115,7 +115,7 @@ describe('CryptocurrencyController', () => {
         mockCryptocurrency
       );
 
-      const req: any = { params: { id: 'crypto-1' } };
+      const req: any = { params: { id: 'crypto-1' }, path: '/api/cryptocurrencies/crypto-1' };
       await CryptocurrencyController.getCryptocurrencyById(req, res);
 
       expect(CryptocurrencyService.getCryptocurrencyById).toHaveBeenCalledWith('crypto-1');
@@ -141,7 +141,7 @@ describe('CryptocurrencyController', () => {
         mockCryptocurrency
       );
 
-      const req: any = { params: { id: 'crypto-2' } };
+      const req: any = { params: { id: 'crypto-2' }, path: '/api/cryptocurrencies/crypto-2' };
       await CryptocurrencyController.getCryptocurrencyById(req, res);
 
       expect(res.json).toHaveBeenCalledWith({
@@ -155,7 +155,10 @@ describe('CryptocurrencyController', () => {
     it('should return 404 when cryptocurrency not found', async () => {
       (CryptocurrencyService.getCryptocurrencyById as jest.Mock).mockResolvedValue(null);
 
-      const req: any = { params: { id: 'nonexistent-id' } };
+      const req: any = {
+        params: { id: 'nonexistent-id' },
+        path: '/api/cryptocurrencies/nonexistent-id',
+      };
       await CryptocurrencyController.getCryptocurrencyById(req, res);
 
       expect(CryptocurrencyService.getCryptocurrencyById).toHaveBeenCalledWith('nonexistent-id');
@@ -167,7 +170,7 @@ describe('CryptocurrencyController', () => {
           message: 'Cryptocurrency not found',
           timestamp: expect.any(String),
           requestId: expect.any(String),
-          path: expect.any(String),
+          path: '/api/cryptocurrencies/nonexistent-id',
         },
         data: null,
       });
@@ -177,7 +180,7 @@ describe('CryptocurrencyController', () => {
       const error = new Error('Database error');
       (CryptocurrencyService.getCryptocurrencyById as jest.Mock).mockRejectedValue(error);
 
-      const req: any = { params: { id: 'crypto-1' } };
+      const req: any = { params: { id: 'crypto-1' }, path: '/api/cryptocurrencies/crypto-1' };
       await CryptocurrencyController.getCryptocurrencyById(req, res);
 
       expect(logger.error).toHaveBeenCalledWith('Failed to fetch cryptocurrency by ID', {
@@ -194,14 +197,14 @@ describe('CryptocurrencyController', () => {
           details: 'Database error',
           timestamp: expect.any(String),
           requestId: expect.any(String),
-          path: expect.any(String),
+          path: '/api/cryptocurrencies/crypto-1',
         },
         data: null,
       });
     });
 
     it('should handle missing ID parameter', async () => {
-      const req: any = { params: {} };
+      const req: any = { params: {}, path: '/api/cryptocurrencies' };
       await CryptocurrencyController.getCryptocurrencyById(req, res);
 
       expect(CryptocurrencyService.getCryptocurrencyById).toHaveBeenCalledWith(undefined);
