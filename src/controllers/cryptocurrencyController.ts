@@ -1,23 +1,30 @@
 import { Request, Response } from 'express';
 import { CryptocurrencyService } from '@/services/cryptocurrencyService';
 import { logger } from '@/services/loggerService';
+import { AlertErrorCodes, createErrorResponse, createSuccessResponse } from '@/utils/errorResponse';
 
 export class CryptocurrencyController {
   static async getAllCryptocurrencies(req: Request, res: Response) {
     try {
       const cryptocurrencies = await CryptocurrencyService.getAllCryptocurrencies();
 
-      res.json({
-        cryptocurrencies,
-      });
+      res.json(createSuccessResponse(req, cryptocurrencies));
     } catch (error: any) {
-      logger.error('❌ Failed to fetch cryptocurrencies', {
+      logger.error('Failed to fetch cryptocurrencies', {
         error: error.message,
         stack: error.stack,
       });
-      res.status(500).json({
-        error: 'Failed to fetch cryptocurrencies',
-      });
+
+      res
+        .status(500)
+        .json(
+          createErrorResponse(
+            req,
+            AlertErrorCodes.DATABASE_ERROR,
+            'Failed to fetch cryptocurrencies',
+            error.message
+          )
+        );
     }
   }
 
@@ -27,18 +34,35 @@ export class CryptocurrencyController {
       const cryptocurrency = await CryptocurrencyService.getCryptocurrencyById(id);
 
       if (!cryptocurrency) {
-        return res.status(404).json({
-          error: 'Cryptocurrency not found',
-        });
+        return res
+          .status(404)
+          .json(
+            createErrorResponse(
+              req,
+              AlertErrorCodes.CRYPTOCURRENCY_NOT_FOUND,
+              'Cryptocurrency not found'
+            )
+          );
       }
 
-      res.json({
-        cryptocurrency,
-      });
+      res.json(createSuccessResponse(req, cryptocurrency));
     } catch (error: any) {
-      res.status(500).json({
-        error: 'Failed to fetch cryptocurrency',
+      logger.error('Failed to fetch cryptocurrency by ID', {
+        cryptocurrencyId: req.params.id,
+        error: error.message,
+        stack: error.stack,
       });
+
+      res
+        .status(500)
+        .json(
+          createErrorResponse(
+            req,
+            AlertErrorCodes.DATABASE_ERROR,
+            'Failed to fetch cryptocurrency',
+            error.message
+          )
+        );
     }
   }
 }

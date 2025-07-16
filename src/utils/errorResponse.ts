@@ -12,6 +12,9 @@ export enum AlertErrorCodes {
   // Authentication/Authorization Errors (401/403)
   UNAUTHORIZED = 'ALERT_UNAUTHORIZED',
   FORBIDDEN = 'ALERT_FORBIDDEN',
+  INVALID_CREDENTIALS = 'AUTH_INVALID_CREDENTIALS',
+  USER_NOT_FOUND = 'AUTH_USER_NOT_FOUND',
+  USER_ALREADY_EXISTS = 'AUTH_USER_ALREADY_EXISTS',
 
   // Not Found Errors (404)
   ALERT_NOT_FOUND = 'ALERT_NOT_FOUND',
@@ -37,6 +40,9 @@ export const HTTP_STATUS_MAPPING: Record<AlertErrorCodes, number> = {
   [AlertErrorCodes.INVALID_TARGET_PRICE]: 400,
   [AlertErrorCodes.UNAUTHORIZED]: 401,
   [AlertErrorCodes.FORBIDDEN]: 403,
+  [AlertErrorCodes.INVALID_CREDENTIALS]: 401,
+  [AlertErrorCodes.USER_NOT_FOUND]: 404,
+  [AlertErrorCodes.USER_ALREADY_EXISTS]: 409,
   [AlertErrorCodes.ALERT_NOT_FOUND]: 404,
   [AlertErrorCodes.CRYPTOCURRENCY_NOT_FOUND]: 404,
   [AlertErrorCodes.ALERT_ALREADY_EXISTS]: 409,
@@ -54,6 +60,7 @@ export interface ErrorResponse {
     message: string;
     details?: string;
     timestamp: string;
+    requestId: string;
     path: string;
   };
   data: null;
@@ -65,6 +72,7 @@ export interface SuccessResponse<T> {
   data: T;
   message?: string;
   timestamp: string;
+  requestId: string;
 }
 
 // Error response helper
@@ -72,8 +80,7 @@ export const createErrorResponse = (
   req: Request,
   code: AlertErrorCodes,
   message: string,
-  details?: string,
-  requestId?: string
+  details?: string
 ): ErrorResponse => ({
   success: false,
   error: {
@@ -81,6 +88,7 @@ export const createErrorResponse = (
     message,
     details,
     timestamp: new Date().toISOString(),
+    requestId: uuidv4(),
     path: req.path,
   },
   data: null,
@@ -96,6 +104,7 @@ export const createSuccessResponse = <T>(
   data,
   message,
   timestamp: new Date().toISOString(),
+  requestId: uuidv4(),
 });
 
 // Generate request ID

@@ -52,7 +52,10 @@ describe('CryptocurrencyController', () => {
 
       expect(CryptocurrencyService.getAllCryptocurrencies).toHaveBeenCalled();
       expect(res.json).toHaveBeenCalledWith({
-        cryptocurrencies: mockCryptocurrencies,
+        success: true,
+        data: mockCryptocurrencies,
+        timestamp: expect.any(String),
+        requestId: expect.any(String),
       });
     });
 
@@ -63,7 +66,10 @@ describe('CryptocurrencyController', () => {
       await CryptocurrencyController.getAllCryptocurrencies(req, res);
 
       expect(res.json).toHaveBeenCalledWith({
-        cryptocurrencies: [],
+        success: true,
+        data: [],
+        timestamp: expect.any(String),
+        requestId: expect.any(String),
       });
     });
 
@@ -74,13 +80,22 @@ describe('CryptocurrencyController', () => {
       const req: any = {};
       await CryptocurrencyController.getAllCryptocurrencies(req, res);
 
-      expect(logger.error).toHaveBeenCalledWith('❌ Failed to fetch cryptocurrencies', {
+      expect(logger.error).toHaveBeenCalledWith('Failed to fetch cryptocurrencies', {
         error: 'Database connection failed',
         stack: error.stack,
       });
       expect(res.status).toHaveBeenCalledWith(500);
       expect(res.json).toHaveBeenCalledWith({
-        error: 'Failed to fetch cryptocurrencies',
+        success: false,
+        error: {
+          code: 'ALERT_DATABASE_ERROR',
+          message: 'Failed to fetch cryptocurrencies',
+          details: 'Database connection failed',
+          timestamp: expect.any(String),
+          requestId: expect.any(String),
+          path: expect.any(String),
+        },
+        data: null,
       });
     });
   });
@@ -105,7 +120,10 @@ describe('CryptocurrencyController', () => {
 
       expect(CryptocurrencyService.getCryptocurrencyById).toHaveBeenCalledWith('crypto-1');
       expect(res.json).toHaveBeenCalledWith({
-        cryptocurrency: mockCryptocurrency,
+        success: true,
+        data: mockCryptocurrency,
+        timestamp: expect.any(String),
+        requestId: expect.any(String),
       });
     });
 
@@ -127,7 +145,10 @@ describe('CryptocurrencyController', () => {
       await CryptocurrencyController.getCryptocurrencyById(req, res);
 
       expect(res.json).toHaveBeenCalledWith({
-        cryptocurrency: mockCryptocurrency,
+        success: true,
+        data: mockCryptocurrency,
+        timestamp: expect.any(String),
+        requestId: expect.any(String),
       });
     });
 
@@ -140,7 +161,15 @@ describe('CryptocurrencyController', () => {
       expect(CryptocurrencyService.getCryptocurrencyById).toHaveBeenCalledWith('nonexistent-id');
       expect(res.status).toHaveBeenCalledWith(404);
       expect(res.json).toHaveBeenCalledWith({
-        error: 'Cryptocurrency not found',
+        success: false,
+        error: {
+          code: 'ALERT_CRYPTOCURRENCY_NOT_FOUND',
+          message: 'Cryptocurrency not found',
+          timestamp: expect.any(String),
+          requestId: expect.any(String),
+          path: expect.any(String),
+        },
+        data: null,
       });
     });
 
@@ -151,9 +180,23 @@ describe('CryptocurrencyController', () => {
       const req: any = { params: { id: 'crypto-1' } };
       await CryptocurrencyController.getCryptocurrencyById(req, res);
 
+      expect(logger.error).toHaveBeenCalledWith('Failed to fetch cryptocurrency by ID', {
+        cryptocurrencyId: 'crypto-1',
+        error: 'Database error',
+        stack: error.stack,
+      });
       expect(res.status).toHaveBeenCalledWith(500);
       expect(res.json).toHaveBeenCalledWith({
-        error: 'Failed to fetch cryptocurrency',
+        success: false,
+        error: {
+          code: 'ALERT_DATABASE_ERROR',
+          message: 'Failed to fetch cryptocurrency',
+          details: 'Database error',
+          timestamp: expect.any(String),
+          requestId: expect.any(String),
+          path: expect.any(String),
+        },
+        data: null,
       });
     });
 

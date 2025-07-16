@@ -22,7 +22,7 @@ export class AlertController {
       let message = 'Failed to create alert';
 
       if (error.message === 'Cryptocurrency not found') {
-        statusCode = 400;
+        statusCode = 404;
         errorCode = AlertErrorCodes.CRYPTOCURRENCY_NOT_FOUND;
         message = 'Invalid cryptocurrency specified';
       } else if (error.message.includes('validation')) {
