@@ -17,9 +17,6 @@ export class PriceUpdateService {
       const coinIds = cryptocurrencies.map((crypto: any) => crypto.coinId);
       const prices = await this.fetchPricesFromCoinGecko(coinIds);
 
-      let updatedCount = 0;
-      let alertChecks = 0;
-
       for (const crypto of cryptocurrencies) {
         const price = prices[crypto.coinId]?.usd;
         if (price && price > 0) {
@@ -31,18 +28,10 @@ export class PriceUpdateService {
           });
 
           await AlertService.checkAndTriggerAlerts(crypto.id, price);
-
-          updatedCount++;
-          alertChecks++;
         }
       }
 
-      logger.info('✅ Price update completed', {
-        totalCryptocurrencies: cryptocurrencies.length,
-        updatedCount,
-        alertChecks,
-        successRate: `${((updatedCount / cryptocurrencies.length) * 100).toFixed(1)}%`,
-      });
+      logger.info('✅ Price update completed');
     } catch (error: any) {
       logger.error('❌ Error updating prices', {
         error: error.message,

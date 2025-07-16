@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { AuthService } from '@/services/authService';
+import { AlertErrorCodes, createErrorResponse } from '@/utils/errorResponse';
 
 declare global {
   namespace Express {
@@ -15,13 +16,17 @@ export const authenticateToken = async (req: Request, res: Response, next: NextF
     const token = authHeader && authHeader.split(' ')[1]; // Bearer TOKEN
 
     if (!token) {
-      return res.status(401).json({ error: 'Access token required' });
+      return res
+        .status(401)
+        .json(createErrorResponse(req, AlertErrorCodes.UNAUTHORIZED, 'Access token required'));
     }
 
     const user = await AuthService.verifyToken(token);
     req.user = user;
     next();
   } catch (error) {
-    return res.status(403).json({ error: 'Invalid or expired token' });
+    return res
+      .status(403)
+      .json(createErrorResponse(req, AlertErrorCodes.FORBIDDEN, 'Invalid or expired token'));
   }
 };
