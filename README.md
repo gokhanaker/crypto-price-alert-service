@@ -115,8 +115,6 @@ npm run db:reset        # Reset database
 
 # Testing
 npm test                      # Run tests
-npm run test:unit             # Run unit tests
-npm run test:integration      # Run integration tests
 
 # Linting
 npm run lint            # Run ESLint
