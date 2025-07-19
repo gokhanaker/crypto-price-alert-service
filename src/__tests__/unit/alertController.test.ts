@@ -54,7 +54,7 @@ describe('AlertController', () => {
     expect(res.json).toHaveBeenCalledWith({
       success: false,
       error: {
-        code: 'ALERT_INTERNAL_ERROR',
+        code: 'COMMON_INTERNAL_ERROR',
         message: 'Failed to create alert',
         details: 'fail',
         timestamp: expect.any(String),
@@ -98,7 +98,7 @@ describe('AlertController', () => {
     expect(res.json).toHaveBeenCalledWith({
       success: false,
       error: {
-        code: 'ALERT_DATABASE_ERROR',
+        code: 'COMMON_DATABASE_ERROR',
         message: 'Failed to fetch alerts',
         details: 'fail',
         timestamp: expect.any(String),
@@ -166,7 +166,7 @@ describe('AlertController', () => {
     expect(res.json).toHaveBeenCalledWith({
       success: false,
       error: {
-        code: 'ALERT_DATABASE_ERROR',
+        code: 'COMMON_DATABASE_ERROR',
         message: 'Failed to fetch alert',
         details: 'fail',
         timestamp: expect.any(String),
@@ -211,7 +211,7 @@ describe('AlertController', () => {
     expect(res.json).toHaveBeenCalledWith({
       success: false,
       error: {
-        code: 'ALERT_INTERNAL_ERROR',
+        code: 'COMMON_INTERNAL_ERROR',
         message: 'Failed to update alert',
         details: 'fail',
         timestamp: expect.any(String),
@@ -256,7 +256,7 @@ describe('AlertController', () => {
     expect(res.json).toHaveBeenCalledWith({
       success: false,
       error: {
-        code: 'ALERT_INTERNAL_ERROR',
+        code: 'COMMON_INTERNAL_ERROR',
         message: 'Failed to delete alert',
         details: 'fail',
         timestamp: expect.any(String),
@@ -300,7 +300,7 @@ describe('AlertController', () => {
     expect(res.json).toHaveBeenCalledWith({
       success: false,
       error: {
-        code: 'ALERT_DATABASE_ERROR',
+        code: 'COMMON_DATABASE_ERROR',
         message: 'Failed to fetch triggered alerts',
         details: 'fail',
         timestamp: expect.any(String),

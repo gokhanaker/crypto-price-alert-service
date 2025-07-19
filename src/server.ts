@@ -11,7 +11,7 @@ import healthRoutes from '@/routes/health';
 import eventRoutes from '@/routes/events';
 import { SchedulerService } from '@/services/schedulerService';
 import { EventController } from '@/controllers/eventController';
-import { AlertErrorCodes, createErrorResponse } from '@/utils/errorResponse';
+import { CommonErrorCodes, createErrorResponse } from '@/utils/errorResponse';
 
 const app = express();
 const PORT = config.port;
@@ -35,7 +35,7 @@ const limiter = rateLimit({
       .json(
         createErrorResponse(
           req,
-          AlertErrorCodes.RATE_LIMIT_EXCEEDED,
+          CommonErrorCodes.RATE_LIMIT_EXCEEDED,
           'Too many requests from this IP, please try again later.'
         )
       );

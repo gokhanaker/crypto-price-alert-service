@@ -88,7 +88,7 @@ describe('CryptocurrencyController', () => {
       expect(res.json).toHaveBeenCalledWith({
         success: false,
         error: {
-          code: 'ALERT_DATABASE_ERROR',
+          code: 'COMMON_DATABASE_ERROR',
           message: 'Failed to fetch cryptocurrencies',
           details: 'Database connection failed',
           timestamp: expect.any(String),
@@ -166,7 +166,7 @@ describe('CryptocurrencyController', () => {
       expect(res.json).toHaveBeenCalledWith({
         success: false,
         error: {
-          code: 'ALERT_CRYPTOCURRENCY_NOT_FOUND',
+          code: 'CRYPTO_NOT_FOUND',
           message: 'Cryptocurrency not found',
           timestamp: expect.any(String),
           requestId: expect.any(String),
@@ -192,7 +192,7 @@ describe('CryptocurrencyController', () => {
       expect(res.json).toHaveBeenCalledWith({
         success: false,
         error: {
-          code: 'ALERT_DATABASE_ERROR',
+          code: 'COMMON_DATABASE_ERROR',
           message: 'Failed to fetch cryptocurrency',
           details: 'Database error',
           timestamp: expect.any(String),

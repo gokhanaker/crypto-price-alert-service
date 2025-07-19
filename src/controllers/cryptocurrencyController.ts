@@ -1,7 +1,12 @@
 import { Request, Response } from 'express';
 import { CryptocurrencyService } from '@/services/cryptocurrencyService';
 import { logger } from '@/services/loggerService';
-import { AlertErrorCodes, createErrorResponse, createSuccessResponse } from '@/utils/errorResponse';
+import {
+  CryptocurrencyErrorCodes,
+  CommonErrorCodes,
+  createErrorResponse,
+  createSuccessResponse,
+} from '@/utils/errorResponse';
 
 export class CryptocurrencyController {
   static async getAllCryptocurrencies(req: Request, res: Response) {
@@ -20,7 +25,7 @@ export class CryptocurrencyController {
         .json(
           createErrorResponse(
             req,
-            AlertErrorCodes.DATABASE_ERROR,
+            CommonErrorCodes.DATABASE_ERROR,
             'Failed to fetch cryptocurrencies',
             error.message
           )
@@ -39,7 +44,7 @@ export class CryptocurrencyController {
           .json(
             createErrorResponse(
               req,
-              AlertErrorCodes.CRYPTOCURRENCY_NOT_FOUND,
+              CryptocurrencyErrorCodes.CRYPTOCURRENCY_NOT_FOUND,
               'Cryptocurrency not found'
             )
           );
@@ -58,7 +63,7 @@ export class CryptocurrencyController {
         .json(
           createErrorResponse(
             req,
-            AlertErrorCodes.DATABASE_ERROR,
+            CommonErrorCodes.DATABASE_ERROR,
             'Failed to fetch cryptocurrency',
             error.message
           )

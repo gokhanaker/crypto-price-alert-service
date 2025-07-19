@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import Joi from 'joi';
-import { AlertErrorCodes, createErrorResponse } from '@/utils/errorResponse';
+import { CommonErrorCodes, createErrorResponse } from '@/utils/errorResponse';
 
 export const validateRequest = (schema: Joi.ObjectSchema) => {
   return (req: Request, res: Response, next: NextFunction) => {
@@ -12,7 +12,7 @@ export const validateRequest = (schema: Joi.ObjectSchema) => {
         .json(
           createErrorResponse(
             req,
-            AlertErrorCodes.VALIDATION_ERROR,
+            CommonErrorCodes.VALIDATION_ERROR,
             'Validation error',
             error.details.map(detail => detail.message).join(', ')
           )

@@ -1,7 +1,13 @@
 import { Request, Response } from 'express';
 import { AuthService } from '@/services/authService';
 import { logger } from '@/services/loggerService';
-import { AlertErrorCodes, createErrorResponse, createSuccessResponse } from '@/utils/errorResponse';
+import {
+  AuthErrorCodes,
+  CommonErrorCodes,
+  AppErrorCodes,
+  createErrorResponse,
+  createSuccessResponse,
+} from '@/utils/errorResponse';
 
 export class AuthController {
   static async register(req: Request, res: Response) {
@@ -17,20 +23,20 @@ export class AuthController {
       });
 
       let statusCode = 500;
-      let errorCode = AlertErrorCodes.INTERNAL_SERVER_ERROR;
+      let errorCode: AppErrorCodes = CommonErrorCodes.INTERNAL_SERVER_ERROR;
       let message = 'Failed to register user';
 
       if (error.message.includes('already exists') || error.message.includes('duplicate')) {
         statusCode = 409;
-        errorCode = AlertErrorCodes.USER_ALREADY_EXISTS;
+        errorCode = AuthErrorCodes.USER_ALREADY_EXISTS;
         message = 'User with this email already exists';
       } else if (error.message.includes('validation') || error.message.includes('invalid')) {
         statusCode = 400;
-        errorCode = AlertErrorCodes.VALIDATION_ERROR;
+        errorCode = AuthErrorCodes.VALIDATION_ERROR;
         message = 'Invalid registration data provided';
       } else if (error.message.includes('password')) {
         statusCode = 400;
-        errorCode = AlertErrorCodes.VALIDATION_ERROR;
+        errorCode = AuthErrorCodes.VALIDATION_ERROR;
         message = 'Password requirements not met';
       }
 
@@ -51,20 +57,20 @@ export class AuthController {
       });
 
       let statusCode = 500;
-      let errorCode = AlertErrorCodes.INTERNAL_SERVER_ERROR;
+      let errorCode: AppErrorCodes = CommonErrorCodes.INTERNAL_SERVER_ERROR;
       let message = 'Failed to authenticate user';
 
       if (error.message.includes('invalid credentials') || error.message.includes('password')) {
         statusCode = 401;
-        errorCode = AlertErrorCodes.INVALID_CREDENTIALS;
+        errorCode = AuthErrorCodes.INVALID_CREDENTIALS;
         message = 'Invalid email or password';
       } else if (error.message.includes('user not found')) {
         statusCode = 404;
-        errorCode = AlertErrorCodes.USER_NOT_FOUND;
+        errorCode = AuthErrorCodes.USER_NOT_FOUND;
         message = 'User not found';
       } else if (error.message.includes('validation')) {
         statusCode = 400;
-        errorCode = AlertErrorCodes.VALIDATION_ERROR;
+        errorCode = AuthErrorCodes.VALIDATION_ERROR;
         message = 'Invalid login data provided';
       }
 

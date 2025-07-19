@@ -1,7 +1,13 @@
 import { Request, Response } from 'express';
 import { AlertService } from '@/services/alertService';
 import { logger } from '@/services/loggerService';
-import { AlertErrorCodes, createErrorResponse, createSuccessResponse } from '@/utils/errorResponse';
+import {
+  AlertErrorCodes,
+  CommonErrorCodes,
+  AppErrorCodes,
+  createErrorResponse,
+  createSuccessResponse,
+} from '@/utils/errorResponse';
 
 export class AlertController {
   static async createAlert(req: Request, res: Response) {
@@ -18,12 +24,12 @@ export class AlertController {
       });
 
       let statusCode = 500;
-      let errorCode = AlertErrorCodes.INTERNAL_SERVER_ERROR;
+      let errorCode: AppErrorCodes = CommonErrorCodes.INTERNAL_SERVER_ERROR;
       let message = 'Failed to create alert';
 
       if (error.message === 'Cryptocurrency not found') {
         statusCode = 404;
-        errorCode = AlertErrorCodes.CRYPTOCURRENCY_NOT_FOUND;
+        errorCode = AlertErrorCodes.INVALID_CRYPTOCURRENCY_ID;
         message = 'Invalid cryptocurrency specified';
       } else if (error.message.includes('validation')) {
         statusCode = 400;
@@ -53,7 +59,7 @@ export class AlertController {
         .json(
           createErrorResponse(
             req,
-            AlertErrorCodes.DATABASE_ERROR,
+            CommonErrorCodes.DATABASE_ERROR,
             'Failed to fetch alerts',
             error.message
           )
@@ -88,7 +94,7 @@ export class AlertController {
         .json(
           createErrorResponse(
             req,
-            AlertErrorCodes.DATABASE_ERROR,
+            CommonErrorCodes.DATABASE_ERROR,
             'Failed to fetch alert',
             error.message
           )
@@ -113,7 +119,7 @@ export class AlertController {
       });
 
       let statusCode = 500;
-      let errorCode = AlertErrorCodes.INTERNAL_SERVER_ERROR;
+      let errorCode: AppErrorCodes = CommonErrorCodes.INTERNAL_SERVER_ERROR;
       let message = 'Failed to update alert';
 
       if (error.message === 'Alert not found') {
@@ -147,7 +153,7 @@ export class AlertController {
       });
 
       let statusCode = 500;
-      let errorCode = AlertErrorCodes.INTERNAL_SERVER_ERROR;
+      let errorCode: AppErrorCodes = CommonErrorCodes.INTERNAL_SERVER_ERROR;
       let message = 'Failed to delete alert';
 
       if (error.message === 'Alert not found') {
@@ -178,7 +184,7 @@ export class AlertController {
         .json(
           createErrorResponse(
             req,
-            AlertErrorCodes.DATABASE_ERROR,
+            CommonErrorCodes.DATABASE_ERROR,
             'Failed to fetch triggered alerts',
             error.message
           )

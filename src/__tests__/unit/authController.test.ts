@@ -81,7 +81,7 @@ describe('AuthController', () => {
       expect(res.json).toHaveBeenCalledWith({
         success: false,
         error: {
-          code: 'ALERT_VALIDATION_ERROR',
+          code: 'AUTH_VALIDATION_ERROR',
           message: 'Invalid registration data provided',
           details: 'validation failed',
           timestamp: expect.any(String),

@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { AuthService } from '@/services/authService';
-import { AlertErrorCodes, createErrorResponse } from '@/utils/errorResponse';
+import { AuthErrorCodes, createErrorResponse } from '@/utils/errorResponse';
 
 declare global {
   namespace Express {
@@ -18,7 +18,7 @@ export const authenticateToken = async (req: Request, res: Response, next: NextF
     if (!token) {
       return res
         .status(401)
-        .json(createErrorResponse(req, AlertErrorCodes.UNAUTHORIZED, 'Access token required'));
+        .json(createErrorResponse(req, AuthErrorCodes.UNAUTHORIZED, 'Access token required'));
     }
 
     const user = await AuthService.verifyToken(token);
@@ -27,6 +27,6 @@ export const authenticateToken = async (req: Request, res: Response, next: NextF
   } catch (error) {
     return res
       .status(403)
-      .json(createErrorResponse(req, AlertErrorCodes.FORBIDDEN, 'Invalid or expired token'));
+      .json(createErrorResponse(req, AuthErrorCodes.FORBIDDEN, 'Invalid or expired token'));
   }
 };
